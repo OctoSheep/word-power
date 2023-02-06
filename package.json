@@ -1,0 +1,25 @@
+{
+  "name": "word-power",
+  "version": "1.0.0",
+  "description": "## 许可证 License",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OctoSheep/word-power.git"
+  },
+  "author": "OctoSheep",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/OctoSheep/word-power/issues"
+  },
+  "homepage": "https://github.com/OctoSheep/word-power#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
