@@ -10,23 +10,35 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
+const glossaryService = require('../services/glossary-service');
+
 const getGlossaries = (req, res) => {
+    // noinspection JSUnusedLocalSymbols
+    const glossaries = glossaryService.getGlossaries();
     res.send('Get all glossaries');
 };
 
 const getGlossary = (req, res) => {
+    // noinspection JSUnusedLocalSymbols
+    const glossary = glossaryService.getGlossary();
     res.send('Get an existing glossary');
 };
 
 const createGlossary = (req, res) => {
+    // noinspection JSUnusedLocalSymbols
+    const createdGlossary = glossaryService.createGlossary();
     res.send('Create a new glossary');
 };
 
 const updateGlossary = (req, res) => {
+    // noinspection JSUnusedLocalSymbols
+    const updatedGlossary = glossaryService.updateGlossary();
     res.send('Update an existing glossary');
 };
 
 const deleteGlossary = (req, res) => {
+    // noinspection JSUnusedLocalSymbols
+    const deletedGlossary = glossaryService.deleteGlossary();
     res.send('Delete an existing glossary');
 };
 
