@@ -10,18 +10,30 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const express            = require('express');
-const router             = express.Router();
-const glossaryController = require('../controllers/glossary-controller');
+const getGlossaries = (req, res) => {
+    res.send('Get all glossaries');
+};
 
-router.get('/', glossaryController.getGlossaries);
+const getGlossary = (req, res) => {
+    res.send('Get an existing glossary');
+};
 
-router.get('/:glossaryId', glossaryController.getGlossary);
+const createGlossary = (req, res) => {
+    res.send('Create a new glossary');
+};
 
-router.post('/', glossaryController.createGlossary);
+const updateGlossary = (req, res) => {
+    res.send('Update an existing glossary');
+};
 
-router.patch('/:glossaryId', glossaryController.updateGlossary);
+const deleteGlossary = (req, res) => {
+    res.send('Delete an existing glossary');
+};
 
-router.delete('/:glossaryId', glossaryController.deleteGlossary);
-
-module.exports = router;
+module.exports = {
+    getGlossaries,
+    getGlossary,
+    createGlossary,
+    updateGlossary,
+    deleteGlossary,
+};
