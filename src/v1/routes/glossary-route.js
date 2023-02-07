@@ -13,8 +13,24 @@
 const express = require('express');
 const router  = express.Router();
 
-router.route('/').get((req, res) => {
-    res.send(`<h1>Hello from ${req.baseUrl}</h1>`);
+router.get('/', (req, res) => {
+    res.send('Get all glossaries');
+});
+
+router.get('/:glossaryId', (req, res) => {
+    res.send('Get an existing glossary');
+});
+
+router.post('/', (req, res) => {
+    res.send('Create a new glossary');
+});
+
+router.patch('/:glossaryId', (req, res) => {
+    res.send('Update an existing glossary');
+});
+
+router.delete('/:glossaryId', (req, res) => {
+    res.send('Delete an existing glossary');
 });
 
 module.exports = router;

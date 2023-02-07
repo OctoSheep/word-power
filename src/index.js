@@ -12,12 +12,12 @@
 
 const express = require('express');
 
-const v1Router = require('./v1/routes');
+const v1GlossaryRouter = require('./v1/routes/glossary-route');
 
 const app  = express();
 const port = process.env.PORT || 3000;
 
-app.use('/v1', v1Router);
+app.use('/v1/glossaries', v1GlossaryRouter);
 
 app.listen(port, () => {
     console.log(`API is listening on port ${port}.`);
