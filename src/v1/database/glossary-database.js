@@ -25,6 +25,19 @@ const getGlossaries = () => {
     });
 };
 
+const getGlossary = (glossaryName) => {
+    return new Promise((resolve, reject) => {
+        glossaryModel.findOne({ name: glossaryName }, (err, glossary) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(glossary);
+            }
+        });
+    });
+};
+
 module.exports = {
     getGlossaries,
+    getGlossary,
 };

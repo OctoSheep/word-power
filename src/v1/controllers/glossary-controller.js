@@ -19,9 +19,14 @@ const getGlossaries = (req, res) => {
 };
 
 const getGlossary = (req, res) => {
-    // noinspection JSUnusedLocalSymbols
-    const glossary = glossaryService.getGlossary();
-    res.send('Get an existing glossary');
+    const glossaryName = req.params['glossaryName'];
+    glossaryService.getGlossary(glossaryName).then((resolve) => {
+        if (resolve === null) {
+            res.send({ status: 404, message: 'Glossary not found.', data: null });
+        } else {
+            res.send({ status: 200, message: 'Get an existing glossary.', data: resolve });
+        }
+    });
 };
 
 const createGlossary = (req, res) => {

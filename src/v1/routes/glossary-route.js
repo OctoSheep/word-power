@@ -16,7 +16,7 @@ const glossaryController = require('../controllers/glossary-controller');
 
 router.get('/', glossaryController.getGlossaries);
 
-router.get('/:glossaryId', glossaryController.getGlossary);
+router.get('/:glossaryName', glossaryController.getGlossary);
 
 router.post('/', glossaryController.createGlossary);
 
