@@ -24,8 +24,10 @@ const getGlossary = (glossaryName) => {
     });
 };
 
-const createGlossary = () => {
-
+const createGlossary = (body) => {
+    return Glossary.createGlossary(body).then((resolve) => {
+        return resolve;
+    });
 };
 
 const updateGlossary = () => {

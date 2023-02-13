@@ -37,7 +37,26 @@ const getGlossary = (glossaryName) => {
     });
 };
 
+const createGlossary = (body) => {
+    return new Promise((resolve, reject) => {
+        const glossary = new glossaryModel(
+            {
+                name:        body.name,
+                description: body.description,
+                vocabulary:  body.vocabulary,
+            });
+        glossaryModel.create(glossary, (err, glossary) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(glossary);
+            }
+        });
+    });
+};
+
 module.exports = {
     getGlossaries,
     getGlossary,
+    createGlossary,
 };
