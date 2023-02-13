@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{word-power/node_modules}" />
+    <file url="PROJECT" libraries="{@types/express, @types/mongoose-aggregate-paginate-v2, @types/mongoose-auto-increment, @types/mongoose-autopopulate, @types/mongoose-deep-populate, @types/mongoose-delete, @types/mongoose-geojson-schema, @types/mongoose-id-validator, @types/mongoose-lean-virtuals, @types/mongoose-mock, @types/mongoose-paginate, @types/mongoose-paginate-v2, @types/mongoose-promise, @types/mongoose-seeder, @types/mongoose-sequence, @types/mongoose-simple-random, @types/mongoose-unique-validator, @types/node, word-power/node_modules}" />
+    <includedPredefinedLibrary name="Node.js Core" />
+  </component>
+</project>
