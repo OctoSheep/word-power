@@ -13,9 +13,9 @@
 const glossaryService = require('../services/glossary-service');
 
 const getGlossaries = (req, res) => {
-    // noinspection JSUnusedLocalSymbols
-    const glossaries = glossaryService.getGlossaries();
-    res.send('Get all glossaries');
+    glossaryService.getGlossaries().then((resolve) => {
+        res.send({ status: 200, message: 'Get all glossaries.', data: resolve });
+    });
 };
 
 const getGlossary = (req, res) => {

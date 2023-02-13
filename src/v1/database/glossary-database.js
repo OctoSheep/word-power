@@ -10,34 +10,21 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const Glossary = require('../database/glossary-database');
+require('./connection');
+const glossaryModel = require('../models/glossary');
 
 const getGlossaries = () => {
-    return Glossary.getGlossaries().then((resolve) => {
-        return resolve;
+    return new Promise((resolve, reject) => {
+        glossaryModel.find({}, (err, glossaries) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(glossaries);
+            }
+        });
     });
-};
-
-const getGlossary = () => {
-
-};
-
-const createGlossary = () => {
-
-};
-
-const updateGlossary = () => {
-
-};
-
-const deleteGlossary = () => {
-
 };
 
 module.exports = {
     getGlossaries,
-    getGlossary,
-    createGlossary,
-    updateGlossary,
-    deleteGlossary,
 };
