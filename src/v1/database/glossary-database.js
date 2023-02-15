@@ -14,80 +14,74 @@ require('./connection');
 const glossaryModel = require('../models/glossary');
 
 const getGlossaries = () => {
-    return new Promise((resolve, reject) => {
-        glossaryModel.find({}, (err, glossaries) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(glossaries);
-            }
-        });
+  return new Promise((resolve, reject) => {
+    glossaryModel.find({}, (err, glossaries) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(glossaries);
+      }
     });
+  });
 };
 
 const getGlossary = (glossaryName) => {
-    return new Promise((resolve, reject) => {
-        glossaryModel.findOne({ name: glossaryName }, (err, glossary) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(glossary);
-            }
-        });
+  return new Promise((resolve, reject) => {
+    glossaryModel.findOne({name: glossaryName}, (err, glossary) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(glossary);
+      }
     });
+  });
 };
 
 const createGlossary = (body) => {
-    return new Promise((resolve, reject) => {
-        const glossary = new glossaryModel(
-            {
-                name:        body.name,
-                description: body.description,
-                vocabulary:  body.vocabulary,
-            });
-        glossaryModel.create(glossary, (err, glossary) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(glossary);
-            }
-        });
+  return new Promise((resolve, reject) => {
+    const glossary = new glossaryModel({
+      name:        body.name,
+      description: body.description,
+      vocabulary:  body.vocabulary,
     });
+    glossaryModel.create(glossary, (err, glossary) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(glossary);
+      }
+    });
+  });
 };
 
 const updateGlossary = (glossaryName, body) => {
-    return new Promise((resolve, reject) => {
-        glossaryModel.updateOne({ name: glossaryName }, {
-            $set: {
-                'name':        body.name,
-                'description': body.description,
-            },
-        }, (err, glossary) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(glossary);
-            }
-        });
+  return new Promise((resolve, reject) => {
+    glossaryModel.updateOne({name: glossaryName}, {
+      $set: {
+        'name': body.name, 'description': body.description,
+      },
+    }, (err, glossary) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(glossary);
+      }
     });
+  });
 };
 
 const deleteGlossary = (glossaryName) => {
-    return new Promise((resolve, reject) => {
-        glossaryModel.deleteOne({ name: glossaryName }, (err, glossary) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(glossary);
-            }
-        });
+  return new Promise((resolve, reject) => {
+    glossaryModel.deleteOne({name: glossaryName}, (err, glossary) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(glossary);
+      }
     });
+  });
 };
 
 module.exports = {
-    getGlossaries,
-    getGlossary,
-    createGlossary,
-    updateGlossary,
-    deleteGlossary,
+  getGlossaries, getGlossary, createGlossary, updateGlossary, deleteGlossary,
 };

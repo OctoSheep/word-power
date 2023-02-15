@@ -13,39 +13,35 @@
 const Glossary = require('../database/glossary-database');
 
 const getGlossaries = () => {
-    return Glossary.getGlossaries().then((resolve) => {
-        return resolve;
-    });
+  return Glossary.getGlossaries().then((resolve) => {
+    return resolve;
+  });
 };
 
 const getGlossary = (glossaryName) => {
-    return Glossary.getGlossary(glossaryName).then((resolve) => {
-        return resolve;
-    });
+  return Glossary.getGlossary(glossaryName).then((resolve) => {
+    return resolve;
+  });
 };
 
 const createGlossary = (body) => {
-    return Glossary.createGlossary(body).then((resolve) => {
-        return resolve;
-    });
+  return Glossary.createGlossary(body).then((resolve) => {
+    return resolve;
+  });
 };
 
 const updateGlossary = (glossaryName, body) => {
-    return Glossary.updateGlossary(glossaryName, body).then((resolve) => {
-        return resolve;
-    });
+  return Glossary.updateGlossary(glossaryName, body).then((resolve) => {
+    return resolve;
+  });
 };
 
 const deleteGlossary = (glossaryName) => {
-    return Glossary.deleteGlossary(glossaryName).then((resolve) => {
-        return resolve;
-    });
+  return Glossary.deleteGlossary(glossaryName).then((resolve) => {
+    return resolve;
+  });
 };
 
 module.exports = {
-    getGlossaries,
-    getGlossary,
-    createGlossary,
-    updateGlossary,
-    deleteGlossary,
+  getGlossaries, getGlossary, createGlossary, updateGlossary, deleteGlossary,
 };

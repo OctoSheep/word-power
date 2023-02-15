@@ -12,19 +12,16 @@
 
 const mongoose = require('mongoose');
 
-const wordSchema = mongoose.Schema(
+const wordSchema = mongoose.Schema({
+  word:        String,
+  index:       Number,
+  phonetic_us: String,
+  phonetic_uk: String,
+  translation: [
     {
-        word:        String,
-        index:       Number,
-        phonetic_us: String,
-        phonetic_uk: String,
-        translation: [
-            {
-                part_of_speech: String,
-                definition:     String,
-            },
-        ],
-    });
+      part_of_speech: String, definition: String,
+    }],
+});
 
 const wordModel = mongoose.model('Word', wordSchema);
 

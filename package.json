@@ -1,7 +1,7 @@
 {
   "name": "word-power",
   "version": "1.0.0",
-  "description": "## 许可证 License",
+  "description": "词力 Word Power",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js"

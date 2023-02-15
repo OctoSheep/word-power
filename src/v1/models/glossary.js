@@ -12,12 +12,11 @@
 
 const mongoose = require('mongoose');
 
-const glossarySchema = mongoose.Schema(
-    {
-        name:         String,
-        description:  String,
-        vocabularies: [mongoose.Schema.Types.ObjectId],
-    });
+const glossarySchema = mongoose.Schema({
+  name:         String,
+  description:  String,
+  vocabularies: [mongoose.Schema.Types.ObjectId],
+});
 
 const glossaryModel = mongoose.model('Glossary', glossarySchema);
 
