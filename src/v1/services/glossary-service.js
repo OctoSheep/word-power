@@ -30,8 +30,10 @@ const createGlossary = (body) => {
     });
 };
 
-const updateGlossary = () => {
-
+const updateGlossary = (glossaryName, body) => {
+    return Glossary.updateGlossary(glossaryName, body).then((resolve) => {
+        return resolve;
+    });
 };
 
 const deleteGlossary = () => {

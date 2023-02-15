@@ -61,9 +61,36 @@ const createGlossary = (req, res) => {
 };
 
 const updateGlossary = (req, res) => {
-    // noinspection JSUnusedLocalSymbols
-    const updatedGlossary = glossaryService.updateGlossary();
-    res.send('Update an existing glossary');
+    const glossaryName = req.params['glossaryName'];
+    const body         = req.body;
+
+    if (body === undefined || body === null) {
+        res.send({ status: 400, message: 'Bad request.', data: null });
+    } else if (body.name !== undefined && body.name !== null
+               && typeof body.name !== 'string') {
+        res.send({ status: 400, message: 'Bad request. Name must be a string.', data: null });
+    } else if (body.name !== undefined && body.name !== null
+               && body.name === '') {
+        res.send({ status: 400, message: 'Bad request. Name is required.', data: null });
+    } else if (body.description !== undefined && body.description !== null
+               && typeof body.description !== 'string') {
+        res.send({ status: 400, message: 'Bad request. Description must be a string.', data: null });
+    } else if (body.description !== undefined && body.description !== null
+               && body.description === '') {
+        res.send({ status: 400, message: 'Bad request. Description is required.', data: null });
+    } else {
+        glossaryService.updateGlossary(glossaryName, body).then((resolve) => {
+            // console.log(resolve);
+            if (resolve.matchedCount === 0) {
+                res.send({ status: 404, message: 'Glossary not found.', data: null });
+            } else {
+                res.send({ status: 200, message: 'Update an existing glossary.', data: resolve });
+            }
+        }).catch((reject) => {
+            // console.log(reject);
+            res.send({ status: 500, message: 'Internal server error.', data: reject });
+        });
+    }
 };
 
 const deleteGlossary = (req, res) => {

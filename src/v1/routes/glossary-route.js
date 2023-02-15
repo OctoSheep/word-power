@@ -20,7 +20,7 @@ router.get('/:glossaryName', glossaryController.getGlossary);
 
 router.post('/', glossaryController.createGlossary);
 
-router.patch('/:glossaryId', glossaryController.updateGlossary);
+router.patch('/:glossaryName', glossaryController.updateGlossary);
 
 router.delete('/:glossaryId', glossaryController.deleteGlossary);
 
