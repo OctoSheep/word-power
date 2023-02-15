@@ -94,9 +94,18 @@ const updateGlossary = (req, res) => {
 };
 
 const deleteGlossary = (req, res) => {
-    // noinspection JSUnusedLocalSymbols
-    const deletedGlossary = glossaryService.deleteGlossary();
-    res.send('Delete an existing glossary');
+    const glossaryName = req.params['glossaryName'];
+    glossaryService.deleteGlossary(glossaryName).then((resolve) => {
+        // console.log(resolve);
+        if (resolve.deletedCount === 0) {
+            res.send({ status: 404, message: 'Glossary not found.', data: null });
+        } else {
+            res.send({ status: 200, message: 'Delete an existing glossary.', data: resolve });
+        }
+    }).catch((reject) => {
+        // console.log(reject);
+        res.send({ status: 500, message: 'Internal server error.', data: reject });
+    });
 };
 
 module.exports = {

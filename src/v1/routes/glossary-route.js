@@ -22,6 +22,6 @@ router.post('/', glossaryController.createGlossary);
 
 router.patch('/:glossaryName', glossaryController.updateGlossary);
 
-router.delete('/:glossaryId', glossaryController.deleteGlossary);
+router.delete('/:glossaryName', glossaryController.deleteGlossary);
 
 module.exports = router;

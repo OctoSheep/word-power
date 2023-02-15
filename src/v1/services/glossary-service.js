@@ -36,8 +36,10 @@ const updateGlossary = (glossaryName, body) => {
     });
 };
 
-const deleteGlossary = () => {
-
+const deleteGlossary = (glossaryName) => {
+    return Glossary.deleteGlossary(glossaryName).then((resolve) => {
+        return resolve;
+    });
 };
 
 module.exports = {

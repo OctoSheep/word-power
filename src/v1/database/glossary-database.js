@@ -72,9 +72,22 @@ const updateGlossary = (glossaryName, body) => {
     });
 };
 
+const deleteGlossary = (glossaryName) => {
+    return new Promise((resolve, reject) => {
+        glossaryModel.deleteOne({ name: glossaryName }, (err, glossary) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(glossary);
+            }
+        });
+    });
+};
+
 module.exports = {
     getGlossaries,
     getGlossary,
     createGlossary,
     updateGlossary,
+    deleteGlossary,
 };
