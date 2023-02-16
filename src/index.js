@@ -21,9 +21,11 @@ app.use((req, res, next) => {
   express.json()(req, res, err => {
     if (err) {
       // console.error(err);
-      return res.status(400).
-          json(
-              {status: 400, message: 'Bad request. Invalid JSON.', data: null});
+      return res.status(400).send({
+        status:  400,
+        message: 'Bad request. Invalid JSON.',
+        data:    null,
+      });
     }
     next();
   });
