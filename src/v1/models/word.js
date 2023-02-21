@@ -14,6 +14,7 @@ const mongoose = require('mongoose');
 
 const wordSchema = mongoose.Schema({
   word:        String,
+  glossary:    String,
   index:       Number,
   phonetic_us: String,
   phonetic_uk: String,

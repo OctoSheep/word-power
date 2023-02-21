@@ -10,31 +10,30 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const express = require('express');
+const Glossary = require('../database/glossary-database');
+const Word     = require('../database/word-database');
 
-const v1GlossaryRouter = require('./v1/routes/glossary-route');
-const v1WordRouter = require('./v1/routes/word-route');
-
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.use((req, res, next) => {
-  express.json()(req, res, err => {
-    if (err) {
-      // console.error(err);
-      return res.status(400).send({
-        status: 400,
-        message: 'Bad request. Invalid JSON.',
-        data: null,
-      });
+const getWords = (glossaryName, word, id) => {
+  return Glossary.getGlossary(glossaryName).then((glossary) => {
+    if (!glossary) {
+      return Promise.resolve(null);
     }
-    next();
+    return Word.getWords(glossary).then((words) => {
+      if (word !== undefined) {
+        return words.filter((w) => {
+          return w.word === word;
+        });
+      } else if (id !== undefined) {
+        return words.filter((w) => {
+          return w.id === id;
+        });
+      } else {
+        return words;
+      }
+    });
   });
-});
+};
 
-app.use('/v1/glossaries', v1GlossaryRouter);
-app.use('/v1/words', v1WordRouter);
-
-app.listen(port, () => {
-  console.log(`API is listening on port ${port}.`);
-});
+module.exports = {
+  getWords,
+};
