@@ -34,6 +34,19 @@ const getWords = (glossaryName, word, id) => {
   });
 };
 
+const createWord = (glossaryName, body) => {
+  return Glossary.getGlossary(glossaryName).then((glossary) => {
+    if (!glossary) {
+      return Promise.resolve(null);
+    }
+    return Word.createWord(glossaryName, body).then((word) => {
+      return Glossary.addWord(glossaryName, word).then(() => {
+        return word;
+      });
+    });
+  });
+};
+
 module.exports = {
-  getWords,
+  getWords, createWord,
 };

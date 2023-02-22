@@ -10,10 +10,12 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const express = require('express');
-const router = express.Router();
+const express        = require('express');
+const router         = express.Router();
 const wordController = require('../controllers/word-controller');
 
 router.get('/:glossaryName', wordController.getWords);
+
+router.post('/:glossaryName', wordController.createWord);
 
 module.exports = router;

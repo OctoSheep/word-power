@@ -70,6 +70,25 @@ const updateGlossary = (glossaryName, body) => {
   });
 };
 
+const addWord = (glossaryName, word) => {
+  return new Promise((resolve, reject) => {
+    glossaryModel.updateOne({name: glossaryName}, {
+      $push: {
+        'vocabularies': word._id,
+      },
+    }, (err, glossary) => {
+      if (err) {
+        console.log('error: ' + err);
+        reject(err);
+      } else {
+        console.log('glossary: ' + glossary);
+        console.log('word: ' + word);
+        resolve(glossary);
+      }
+    });
+  });
+};
+
 const deleteGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
     glossaryModel.deleteOne({name: glossaryName}, (err, glossary) => {
@@ -83,5 +102,6 @@ const deleteGlossary = (glossaryName) => {
 };
 
 module.exports = {
-  getGlossaries, getGlossary, createGlossary, updateGlossary, deleteGlossary,
+  getGlossaries, getGlossary, createGlossary, addWord, updateGlossary,
+  deleteGlossary,
 };

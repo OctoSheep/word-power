@@ -47,6 +47,41 @@ const getWords = (req, res) => {
   });
 };
 
+const createWord = (req, res) => {
+  const glossaryName = req.params['glossaryName'];
+  const body         = req.body;
+  wordService.createWord(glossaryName, body).then((resolve) => {
+    if (resolve === null) {
+      res.status(404).send({
+        status:  404,
+        message: 'Glossary not found.',
+        data:    null,
+      });
+    } else {
+      res.status(200).send({
+        status:  200,
+        message: 'Word added to ' + glossaryName + '.',
+        data:    resolve,
+      });
+    }
+  }).catch((reject) => {
+    console.log(reject);
+    if (reject.code === 11000) {
+      res.status(409).send({
+        status:  409,
+        message: 'Word already exists in ' + glossaryName + '.',
+        data:    null,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    reject,
+      });
+    }
+  });
+};
+
 module.exports = {
-  getWords,
+  getWords, createWord,
 };

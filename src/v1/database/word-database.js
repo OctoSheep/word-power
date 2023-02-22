@@ -25,6 +25,26 @@ const getWords = (glossary) => {
   });
 };
 
+const createWord = (glossaryName, body) => {
+  return new Promise((resolve, reject) => {
+    const word = new wordModel({
+      word:        body.word,
+      index:       body.index,
+      phonetic_us: body.phonetic_us,
+      phonetic_uk: body.phonetic_uk,
+      translation: body.translation,
+      glossary:    glossaryName,
+    });
+    wordModel.create(word, (err, word) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(word);
+      }
+    });
+  });
+};
+
 module.exports = {
-  getWords,
+  getWords, createWord,
 };
