@@ -43,5 +43,9 @@ const deleteGlossary = (glossaryName) => {
 };
 
 module.exports = {
-  getGlossaries, getGlossary, createGlossary, updateGlossary, deleteGlossary,
+  getGlossaries,
+  getGlossary,
+  createGlossary,
+  updateGlossary,
+  deleteGlossary,
 };

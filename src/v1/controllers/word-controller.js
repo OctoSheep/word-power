@@ -16,6 +16,7 @@ const getWords = (req, res) => {
   const glossaryName = req.params['glossaryName'];
   const word         = req.query['word'];
   const id           = req.query['id'];
+
   wordService.getWords(glossaryName, word, id).then((resolve) => {
     // console.log(resolve);
     if (resolve === null) {
@@ -50,6 +51,7 @@ const getWords = (req, res) => {
 const createWord = (req, res) => {
   const glossaryName = req.params['glossaryName'];
   const body         = req.body;
+
   wordService.createWord(glossaryName, body).then((resolve) => {
     if (resolve === null) {
       res.status(404).send({
@@ -65,7 +67,7 @@ const createWord = (req, res) => {
       });
     }
   }).catch((reject) => {
-    console.log(reject);
+    // console.log(reject);
     if (reject.code === 11000) {
       res.status(409).send({
         status:  409,
@@ -83,5 +85,6 @@ const createWord = (req, res) => {
 };
 
 module.exports = {
-  getWords, createWord,
+  getWords,
+  createWord,
 };

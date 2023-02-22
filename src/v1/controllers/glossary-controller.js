@@ -220,5 +220,9 @@ const deleteGlossary = (req, res) => {
 };
 
 module.exports = {
-  getGlossaries, getGlossary, createGlossary, updateGlossary, deleteGlossary,
+  getGlossaries,
+  getGlossary,
+  createGlossary,
+  updateGlossary,
+  deleteGlossary,
 };

@@ -46,5 +46,6 @@ const createWord = (glossaryName, body) => {
 };
 
 module.exports = {
-  getWords, createWord,
+  getWords,
+  createWord,
 };
