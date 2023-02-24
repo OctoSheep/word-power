@@ -25,6 +25,21 @@ const getWords = (glossary) => {
   });
 };
 
+const getWord = (glossaryName, wordId) => {
+  return new Promise((resolve, reject) => {
+    wordModel.findOne({
+      '_id':      Object(wordId),
+      'glossary': glossaryName,
+    }, (err, word) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(word);
+      }
+    });
+  });
+};
+
 const createWord = (glossaryName, body) => {
   return new Promise((resolve, reject) => {
     const word = new wordModel({
@@ -45,7 +60,35 @@ const createWord = (glossaryName, body) => {
   });
 };
 
+const updateWord = (oldWord, body) => {
+  return new Promise((resolve, reject) => {
+    wordModel.findOneAndUpdate({
+      _id:      oldWord._id,
+      glossary: oldWord.glossary,
+    }, {
+      $set: {
+        glossary:    body.glossary || oldWord.glossary,
+        word:        body.word || oldWord.word,
+        index:       body.index || oldWord.index,
+        phonetic_us: body.phonetic_us || oldWord.phonetic_us,
+        phonetic_uk: body.phonetic_uk || oldWord.phonetic_uk,
+        translation: body.translation || oldWord.translation,
+      },
+    }, {
+      returnOriginal: false,
+    }, (err, word) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(word);
+      }
+    });
+  });
+};
+
 module.exports = {
   getWords,
+  getWord,
   createWord,
+  updateWord,
 };

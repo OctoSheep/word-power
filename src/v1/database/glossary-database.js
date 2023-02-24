@@ -99,6 +99,22 @@ const addWord = (glossaryName, word) => {
   });
 };
 
+const deleteWord = (glossaryName, word) => {
+  return new Promise((resolve, reject) => {
+    glossaryModel.updateOne({name: glossaryName}, {
+      $pull: {
+        'vocabularies': word._id,
+      },
+    }, (err, glossary) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(glossary);
+      }
+    });
+  });
+};
+
 module.exports = {
   getGlossaries,
   getGlossary,
@@ -106,4 +122,5 @@ module.exports = {
   updateGlossary,
   deleteGlossary,
   addWord,
+  deleteWord,
 };

@@ -18,4 +18,6 @@ router.get('/:glossaryName', wordController.getWords);
 
 router.post('/:glossaryName', wordController.createWord);
 
+router.patch('/:glossaryName/:wordId', wordController.updateWord);
+
 module.exports = router;

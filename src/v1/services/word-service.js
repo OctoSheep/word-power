@@ -47,7 +47,43 @@ const createWord = (glossaryName, body) => {
   });
 };
 
+const updateWord = (glossaryName, wordId, body) => {
+  return Glossary.getGlossary(glossaryName).then((oldGlossary) => {
+    if (!oldGlossary) {
+      return Promise.resolve('Old glossary not found.');
+    }
+    if (body.glossary !== undefined && body.glossary !== null) {
+      return Glossary.getGlossary(body.glossary).then((newGlossary) => {
+        if (!newGlossary) {
+          return Promise.resolve('New glossary not found.');
+        }
+        return Word.getWord(glossaryName, wordId).then((oldWord) => {
+          if (!oldWord) {
+            return Promise.resolve('Word not found in ' + glossaryName + '.');
+          }
+          return Glossary.deleteWord(glossaryName, oldWord).then(() => {
+            return Word.updateWord(oldWord, body).then(() => {
+              return Glossary.addWord(body.glossary, oldWord).then(() => {
+                return oldWord;
+              });
+            });
+          });
+        });
+      });
+    }
+    return Word.getWord(glossaryName, wordId).then((oldWord) => {
+      if (!oldWord) {
+        return Promise.resolve('Word not found in ' + glossaryName + '.');
+      }
+      return Word.updateWord(oldWord, body).then((newWord) => {
+        return newWord;
+      });
+    });
+  });
+};
+
 module.exports = {
   getWords,
   createWord,
+  updateWord,
 };
