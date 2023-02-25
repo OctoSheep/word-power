@@ -15,7 +15,7 @@ const glossaryModel = require('../models/glossary');
 
 const getGlossaries = () => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.find({}, (err, glossaries) => {
+    return glossaryModel.find({}, {}, {}, (err, glossaries) => {
       if (err) {
         reject(err);
       } else {
@@ -27,7 +27,9 @@ const getGlossaries = () => {
 
 const getGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.findOne({name: glossaryName}, (err, glossary) => {
+    return glossaryModel.findOne({
+      name: glossaryName,
+    }, {}, {}, (err, glossary) => {
       if (err) {
         reject(err);
       } else {
@@ -44,7 +46,7 @@ const createGlossary = (body) => {
       description: body.description,
       vocabulary:  body.vocabulary,
     });
-    return glossaryModel.create(glossary, (err, glossary) => {
+    return glossaryModel.create(glossary, {}, (err, glossary) => {
       if (err) {
         reject(err);
       } else {
@@ -56,12 +58,14 @@ const createGlossary = (body) => {
 
 const updateGlossary = (glossaryName, body) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.updateOne({name: glossaryName}, {
+    return glossaryModel.updateOne({
+      name: glossaryName,
+    }, {
       $set: {
         'name':        body.name,
         'description': body.description,
       },
-    }, (err, glossary) => {
+    }, {}, (err, glossary) => {
       if (err) {
         reject(err);
       } else {
@@ -73,7 +77,9 @@ const updateGlossary = (glossaryName, body) => {
 
 const deleteGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.deleteOne({name: glossaryName}, (err, glossary) => {
+    return glossaryModel.deleteOne({
+      name: glossaryName,
+    }, {}, (err, glossary) => {
       if (err) {
         reject(err);
       } else {
@@ -85,11 +91,13 @@ const deleteGlossary = (glossaryName) => {
 
 const addWord = (glossaryName, word) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.updateOne({name: glossaryName}, {
+    return glossaryModel.updateOne({
+      name: glossaryName,
+    }, {
       $push: {
         'vocabularies': word._id,
       },
-    }, (err, glossary) => {
+    }, {}, (err, glossary) => {
       if (err) {
         reject(err);
       } else {
@@ -101,11 +109,13 @@ const addWord = (glossaryName, word) => {
 
 const deleteWord = (glossaryName, word) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.updateOne({name: glossaryName}, {
+    return glossaryModel.updateOne({
+      name: glossaryName,
+    }, {
       $pull: {
         'vocabularies': word._id,
       },
-    }, (err, glossary) => {
+    }, {}, (err, glossary) => {
       if (err) {
         reject(err);
       } else {

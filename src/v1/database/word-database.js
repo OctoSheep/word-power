@@ -15,7 +15,9 @@ const wordModel = require('../models/word');
 
 const getWords = (glossary) => {
   return new Promise((resolve, reject) => {
-    return wordModel.find({'glossary': glossary.name}, (err, words) => {
+    return wordModel.find({
+      'glossary': glossary.name,
+    }, {}, {}, (err, words) => {
       if (err) {
         reject(err);
       } else {
@@ -30,7 +32,7 @@ const getWord = (glossaryName, wordId) => {
     return wordModel.findOne({
       '_id':      Object(wordId),
       'glossary': glossaryName,
-    }, (err, word) => {
+    }, {}, {}, (err, word) => {
       if (err) {
         reject(err);
       } else {
@@ -50,7 +52,7 @@ const createWord = (glossaryName, body) => {
       translation: body.translation,
       glossary:    glossaryName,
     });
-    return wordModel.create(word, (err, word) => {
+    return wordModel.create(word, {}, (err, word) => {
       if (err) {
         reject(err);
       } else {
@@ -91,7 +93,7 @@ const deleteWord = (glossaryName, word) => {
     return wordModel.findOneAndDelete({
       _id:      word._id,
       glossary: glossaryName,
-    }, (err, word) => {
+    }, {}, (err, word) => {
       if (err) {
         reject(err);
       } else {
