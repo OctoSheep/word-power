@@ -17,35 +17,43 @@ const getWords = (req, res) => {
   const word         = req.query['word'];
   const id           = req.query['id'];
 
-  wordService.getWords(glossaryName, word, id).then((resolve) => {
-    // console.log(resolve);
-    if (resolve === null) {
-      res.status(404).send({
-        status:  404,
-        message: 'Glossary not found.',
-        data:    null,
-      });
-    } else if (resolve.length === 0) {
-      res.status(200).send({
-        status:  200,
-        message: 'No words found in ' + glossaryName + '.',
-        data:    null,
-      });
-    } else {
-      res.status(200).send({
-        status:  200,
-        message: 'Get all words from ' + glossaryName + '.',
-        data:    resolve,
-      });
-    }
-  }).catch((reject) => {
-    // console.log(reject);
-    res.status(500).send({
-      status:  500,
-      message: 'Internal server error.',
-      data:    reject,
+  if (id.length !== 24) {
+    res.status(400).send({
+      status:  400,
+      message: 'Word ID is invalid.',
+      data:    null,
     });
-  });
+  } else {
+    wordService.getWords(glossaryName, word, id).then((resolve) => {
+      // console.log(resolve);
+      if (resolve === null) {
+        res.status(404).send({
+          status:  404,
+          message: 'Glossary not found.',
+          data:    null,
+        });
+      } else if (resolve.length === 0) {
+        res.status(200).send({
+          status:  200,
+          message: 'No matching words found in ' + glossaryName + '.',
+          data:    null,
+        });
+      } else {
+        res.status(200).send({
+          status:  200,
+          message: 'Get all matching words in ' + glossaryName + '.',
+          data:    resolve,
+        });
+      }
+    }).catch((reject) => {
+      // console.log(reject);
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    reject,
+      });
+    });
+  }
 };
 
 const createWord = (req, res) => {
@@ -89,7 +97,13 @@ const updateWord = (req, res) => {
   const wordId       = req.params['wordId'];
   const body         = req.body;
 
-  if (body === undefined || body === null) {
+  if (wordId.length !== 24) {
+    res.status(400).send({
+      status:  400,
+      message: 'Word ID is invalid.',
+      data:    null,
+    });
+  } else if (body === undefined || body === null) {
     res.status(400).send({
       status:  400,
       message: 'Body is required.',
@@ -176,29 +190,37 @@ const deleteWord = (req, res) => {
   const glossaryName = req.params['glossaryName'];
   const wordId       = req.params['wordId'];
 
-  wordService.deleteWord(glossaryName, wordId).then((resolve) => {
-    // console.log(resolve);
-    if (typeof resolve === 'string') {
-      res.status(404).send({
-        status:  404,
-        message: resolve,
-        data:    null,
-      });
-    } else {
-      res.status(200).send({
-        status:  200,
-        message: 'Word deleted from ' + glossaryName + '.',
-        data:    resolve,
-      });
-    }
-  }).catch((reject) => {
-    // console.log(reject);
-    res.status(500).send({
-      status:  500,
-      message: 'Internal server error.',
-      data:    reject,
+  if (wordId.length !== 24) {
+    res.status(400).send({
+      status:  400,
+      message: 'Word ID is invalid.',
+      data:    null,
     });
-  });
+  } else {
+    wordService.deleteWord(glossaryName, wordId).then((resolve) => {
+      // console.log(resolve);
+      if (typeof resolve === 'string') {
+        res.status(404).send({
+          status:  404,
+          message: resolve,
+          data:    null,
+        });
+      } else {
+        res.status(200).send({
+          status:  200,
+          message: 'Word deleted from ' + glossaryName + '.',
+          data:    resolve,
+        });
+      }
+    }).catch((reject) => {
+      // console.log(reject);
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    reject,
+      });
+    });
+  }
 };
 
 module.exports = {
