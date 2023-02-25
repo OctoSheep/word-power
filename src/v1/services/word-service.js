@@ -82,8 +82,27 @@ const updateWord = (glossaryName, wordId, body) => {
   });
 };
 
+const deleteWord = (glossaryName, wordId) => {
+  return Glossary.getGlossary(glossaryName).then((glossary) => {
+    if (!glossary) {
+      return Promise.resolve('Glossary not found.');
+    }
+    return Word.getWord(glossaryName, wordId).then((word) => {
+      if (!word) {
+        return Promise.resolve('Word not found in ' + glossaryName + '.');
+      }
+      return Glossary.deleteWord(glossaryName, word).then(() => {
+        return Word.deleteWord(glossaryName, word).then(() => {
+          return word;
+        });
+      });
+    });
+  });
+};
+
 module.exports = {
   getWords,
   createWord,
   updateWord,
+  deleteWord,
 };

@@ -172,8 +172,38 @@ const updateWord = (req, res) => {
   }
 };
 
+const deleteWord = (req, res) => {
+  const glossaryName = req.params['glossaryName'];
+  const wordId       = req.params['wordId'];
+
+  wordService.deleteWord(glossaryName, wordId).then((resolve) => {
+    // console.log(resolve);
+    if (typeof resolve === 'string') {
+      res.status(404).send({
+        status:  404,
+        message: resolve,
+        data:    null,
+      });
+    } else {
+      res.status(200).send({
+        status:  200,
+        message: 'Word deleted from ' + glossaryName + '.',
+        data:    resolve,
+      });
+    }
+  }).catch((reject) => {
+    // console.log(reject);
+    res.status(500).send({
+      status:  500,
+      message: 'Internal server error.',
+      data:    reject,
+    });
+  });
+};
+
 module.exports = {
   getWords,
   createWord,
   updateWord,
+  deleteWord,
 };

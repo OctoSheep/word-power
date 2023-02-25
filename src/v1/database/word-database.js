@@ -86,9 +86,25 @@ const updateWord = (oldWord, body) => {
   });
 };
 
+const deleteWord = (glossaryName, word) => {
+  return new Promise((resolve, reject) => {
+    wordModel.findOneAndDelete({
+      _id:      word._id,
+      glossary: glossaryName,
+    }, (err, word) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(word);
+      }
+    });
+  });
+};
+
 module.exports = {
   getWords,
   getWord,
   createWord,
   updateWord,
+  deleteWord,
 };

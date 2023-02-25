@@ -20,4 +20,6 @@ router.post('/:glossaryName', wordController.createWord);
 
 router.patch('/:glossaryName/:wordId', wordController.updateWord);
 
+router.delete('/:glossaryName/:wordId', wordController.deleteWord);
+
 module.exports = router;
