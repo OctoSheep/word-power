@@ -9,23 +9,23 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="@types/express" level="application" />
-    <orderEntry type="library" name="@types/node" level="application" />
-    <orderEntry type="library" name="@types/mongoose-aggregate-paginate-v2" level="application" />
-    <orderEntry type="library" name="@types/mongoose-auto-increment" level="application" />
+    <orderEntry type="library" name="@types/mongoose-unique-validator" level="application" />
     <orderEntry type="library" name="@types/mongoose-autopopulate" level="application" />
-    <orderEntry type="library" name="@types/mongoose-deep-populate" level="application" />
+    <orderEntry type="library" name="@types/mongoose-auto-increment" level="application" />
     <orderEntry type="library" name="@types/mongoose-delete" level="application" />
-    <orderEntry type="library" name="@types/mongoose-geojson-schema" level="application" />
-    <orderEntry type="library" name="@types/mongoose-id-validator" level="application" />
-    <orderEntry type="library" name="@types/mongoose-lean-virtuals" level="application" />
-    <orderEntry type="library" name="@types/mongoose-mock" level="application" />
-    <orderEntry type="library" name="@types/mongoose-paginate" level="application" />
+    <orderEntry type="library" name="@types/mongoose-deep-populate" level="application" />
     <orderEntry type="library" name="@types/mongoose-paginate-v2" level="application" />
-    <orderEntry type="library" name="@types/mongoose-promise" level="application" />
-    <orderEntry type="library" name="@types/mongoose-seeder" level="application" />
     <orderEntry type="library" name="@types/mongoose-sequence" level="application" />
     <orderEntry type="library" name="@types/mongoose-simple-random" level="application" />
-    <orderEntry type="library" name="@types/mongoose-unique-validator" level="application" />
+    <orderEntry type="library" name="@types/mongoose-promise" level="application" />
+    <orderEntry type="library" name="@types/mongoose-aggregate-paginate-v2" level="application" />
+    <orderEntry type="library" name="@types/mongoose-mock" level="application" />
+    <orderEntry type="library" name="@types/mongoose-paginate" level="application" />
+    <orderEntry type="library" name="@types/node" level="application" />
+    <orderEntry type="library" name="@types/mongoose-geojson-schema" level="application" />
+    <orderEntry type="library" name="@types/mongoose-id-validator" level="application" />
+    <orderEntry type="library" name="@types/express" level="application" />
+    <orderEntry type="library" name="@types/mongoose-lean-virtuals" level="application" />
+    <orderEntry type="library" name="@types/mongoose-seeder" level="application" />
   </component>
 </module>

@@ -32,6 +32,7 @@ const getGlossaries = (req, res) => {
 
 const getGlossary = (req, res) => {
   const glossaryName = req.params['glossaryName'];
+
   glossaryService.getGlossary(glossaryName).then((resolve) => {
     // console.log(resolve);
     if (resolve === null) {
@@ -194,6 +195,7 @@ const updateGlossary = (req, res) => {
 
 const deleteGlossary = (req, res) => {
   const glossaryName = req.params['glossaryName'];
+
   glossaryService.deleteGlossary(glossaryName).then((resolve) => {
     // console.log(resolve);
     if (resolve.deletedCount === 0) {
