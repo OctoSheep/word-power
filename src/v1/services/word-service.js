@@ -19,13 +19,13 @@ const getWords = (glossaryName, word, id) => {
       return Promise.resolve(null);
     }
     return Word.getWords(glossary).then((words) => {
-      if (word !== undefined) {
-        return words.filter((w) => {
-          return w.word === word;
-        });
-      } else if (id !== undefined) {
+      if (id !== undefined) {
         return words.filter((w) => {
           return w.id === id;
+        });
+      } else if (word !== undefined) {
+        return words.filter((w) => {
+          return w.word === word;
         });
       } else {
         return words;

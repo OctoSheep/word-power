@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="跳过外部 JSON 文件" pattern="!file:src/*.json" />
+</component>

@@ -17,7 +17,7 @@ const getWords = (req, res) => {
   const word         = req.query['word'];
   const id           = req.query['id'];
 
-  if (id.length !== 24) {
+  if (id !== undefined && id !== null && id.length !== 24) {
     res.status(400).send({
       status:  400,
       message: 'Word ID is invalid.',
