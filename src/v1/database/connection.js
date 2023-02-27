@@ -10,21 +10,21 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const mongoose = require('mongoose');
+const {
+        connect,
+        connection,
+        set,
+      } = require('mongoose');
 
-mongoose.set('strictQuery', false);
+set('strictQuery', false);
 
-try {
-  mongoose.connect('mongodb://127.0.0.1:27017/power');
-} catch (e) {
-  console.log(e);
-}
-
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('Connected to MongoDB');
+connect('mongodb://127.0.0.1:27017/power').catch(err => {
+  console.log(err);
 });
 
-module.exports = db;
+connection.on('error', err => {
+  console.log(err);
+});
+connection.once('open', () => {
+  console.log('Connected to MongoDB');
+});

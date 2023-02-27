@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/OctoSheep/word-power#readme",
   "devDependencies": {
+    "@types/express": "^4.17.17",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
