@@ -46,7 +46,7 @@ const createGlossary = (body) => {
       description: body.description,
       vocabulary:  body.vocabulary,
     });
-    return glossaryModel.create(glossary, {}, (err, glossary) => {
+    return glossaryModel.create([glossary], {}, (err, glossary) => {
       if (err) {
         reject(err);
       } else {

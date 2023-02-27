@@ -79,7 +79,7 @@ const createWord = (req, res) => {
     if (reject.code === 11000) {
       res.status(409).send({
         status:  409,
-        message: 'Word already exists in ' + glossaryName + '.',
+        message: 'Word or index already exists in ' + glossaryName + '.',
         data:    null,
       });
     } else {
@@ -172,7 +172,7 @@ const updateWord = (req, res) => {
       if (reject.code === 11000) {
         res.status(409).send({
           status:  409,
-          message: 'Word and index already exists in ' + glossaryName + '.',
+          message: 'Word or index already exists in ' + glossaryName + '.',
           data:    null,
         });
       } else {

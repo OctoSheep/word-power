@@ -52,7 +52,7 @@ const createWord = (glossaryName, body) => {
       translation: body.translation,
       glossary:    glossaryName,
     });
-    return wordModel.create(word, {}, (err, word) => {
+    return wordModel.create([word], {}, (err, word) => {
       if (err) {
         reject(err);
       } else {
@@ -69,12 +69,12 @@ const updateWord = (oldWord, body) => {
       glossary: oldWord.glossary,
     }, {
       $set: {
-        glossary:    body.glossary || oldWord.glossary,
-        word:        body.word || oldWord.word,
-        index:       body.index || oldWord.index,
-        phonetic_us: body.phonetic_us || oldWord.phonetic_us,
-        phonetic_uk: body.phonetic_uk || oldWord.phonetic_uk,
-        translation: body.translation || oldWord.translation,
+        glossary:    body.glossary,
+        word:        body.word,
+        index:       body.index,
+        phonetic_us: body.phonetic_us,
+        phonetic_uk: body.phonetic_uk,
+        translation: body.translation,
       },
     }, {
       returnOriginal: false,
