@@ -13,9 +13,21 @@
 const mongoose = require('mongoose');
 
 const glossarySchema = mongoose.Schema({
-  name:         String,
-  description:  String,
-  vocabularies: [mongoose.Schema.Types.ObjectId],
+  name:         {
+    type:     String,
+    required: true,
+    unique:   true,
+  },
+  description:  {
+    type:     String,
+    required: true,
+  },
+  vocabularies: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref:  'Word',
+    },
+  ],
 });
 
 const glossaryModel = mongoose.model('Glossary', glossarySchema);

@@ -8,63 +8,129 @@ This program is released under license of GPL-3.0-or-later.
 
 ## MongoDB 模式
 
-`glossary` 集合
+### 集合
+
+`glossary`:
 
 ```json
 {
   "_id": "ObjectId",
   "__v": "Number",
-  "name": "String",
-  "description": "String",
+  "name": {
+    "type": "String",
+    "required": true,
+    "unique": true
+  },
+  "description": {
+    "type": "String",
+    "required": true
+  },
   "vocabulary": [
-    "ObjectId",
-    "ObjectId",
+    {
+      "type": "ObjectId",
+      "ref": "Word"
+    },
     "..."
   ]
 }
 ```
 
-`glossary` 索引
-
-```json
-{
-  "name": 1
-}
-```
-
-`vocabulary` 集合
+`words`:
 
 ```json
 {
   "_id": "ObjectId",
   "__v": "Number",
-  "word": "String",
-  "glossary": "String",
-  "index": "Number",
-  "phonetic_us": "String",
-  "phonetic_uk": "String",
+  "glossary": {
+    "type": "String",
+    "required": true
+  },
+  "index": {
+    "type": "Number",
+    "required": true
+  },
+  "word": {
+    "type": "String",
+    "required": true
+  },
+  "phonetic_us": {
+    "type": "String"
+  },
+  "phonetic_uk": {
+    "type": "String"
+  },
   "translation": [
     {
       "_id": "ObjectId",
-      "part_of_speech": "String",
-      "definition": "String"
-    },
-    {
-      "_id": "ObjectId",
-      "part_of_speech": "String",
-      "definition": "String"
+      "part_of_speech": {
+        "type": "String",
+        "required": true
+      },
+      "definition": {
+        "type": "String",
+        "required": true
+      }
     },
     "..."
   ]
 }
 ```
 
-`vocabulary` 索引
+### 索引
+
+`glossary`:
 
 ```json
-{
-  "glossary": 1,
-  "index": 1,
-  "word": 1
-}
+[
+  {
+    "key": {
+      "_id": 1
+    },
+    "name": "_id_",
+    "v": 2
+  },
+  {
+    "key": {
+      "name": 1
+    },
+    "name": "name_1",
+    "v": 2,
+    "background": true,
+    "unique": true
+  }
+]
+```
+
+`words`:
+
+```json
+[
+  {
+    "key": {
+      "_id": 1
+    },
+    "name": "_id_",
+    "v": 2
+  },
+  {
+    "key": {
+      "glossary": 1,
+      "index": 1
+    },
+    "name": "glossary_1_index_1",
+    "v": 2,
+    "background": true,
+    "unique": true
+  },
+  {
+    "key": {
+      "glossary": 1,
+      "word": 1
+    },
+    "name": "glossary_1_word_1",
+    "v": 2,
+    "background": true,
+    "unique": true
+  }
+]
 ```

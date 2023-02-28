@@ -13,9 +13,9 @@
 const express = require('express');
 
 const v1GlossaryRouter = require('./v1/routes/glossary-route');
-const v1WordRouter = require('./v1/routes/word-route');
+const v1WordRouter     = require('./v1/routes/word-route');
 
-const app = express();
+const app  = express();
 const port = process.env.PORT || 3000;
 
 app.use((req, res, next) => {
@@ -23,9 +23,9 @@ app.use((req, res, next) => {
     if (err) {
       // console.error(err);
       return res.status(400).send({
-        status: 400,
+        status:  400,
         message: 'Bad request. Invalid JSON.',
-        data: null,
+        data:    null,
       });
     }
     next();

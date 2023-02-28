@@ -13,14 +13,34 @@
 const mongoose = require('mongoose');
 
 const wordSchema = mongoose.Schema({
-  word:        String,
-  glossary:    String,
-  index:       Number,
-  phonetic_us: String,
-  phonetic_uk: String,
+  glossary:    {
+    type:     String,
+    required: true,
+  },
+  index:       {
+    type:     Number,
+    required: true,
+  },
+  word:        {
+    type:     String,
+    required: true,
+  },
+  phonetic_us: {
+    type: String,
+  },
+  phonetic_uk: {
+    type: String,
+  },
   translation: [
     {
-      part_of_speech: String, definition: String,
+      part_of_speech: {
+        type:     String,
+        required: true,
+      },
+      definition:     {
+        type:     String,
+        required: true,
+      },
     }],
 });
 
