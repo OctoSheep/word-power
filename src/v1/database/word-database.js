@@ -17,12 +17,10 @@ const getWords = (glossary) => {
   return new Promise((resolve, reject) => {
     return wordModel.find({
       'glossary': glossary.name,
-    }, {}, {}, (err, words) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(words);
-      }
+    }, {}, {}).exec().then((words) => {
+      resolve(words);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -32,12 +30,10 @@ const getWord = (glossaryName, wordId) => {
     return wordModel.findOne({
       '_id':      Object(wordId),
       'glossary': glossaryName,
-    }, {}, {}, (err, word) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(word);
-      }
+    }, {}, {}).exec().then((word) => {
+      resolve(word);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -52,12 +48,10 @@ const createWord = (glossaryName, body) => {
       translation: body.translation,
       glossary:    glossaryName,
     });
-    return wordModel.create([word], {}, (err, word) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(word);
-      }
+    return wordModel.create([word], {}).then((word) => {
+      resolve(word);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -77,13 +71,11 @@ const updateWord = (oldWord, body) => {
         translation: body.translation,
       },
     }, {
-      returnOriginal: false,
-    }, (err, word) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(word);
-      }
+      new: true,
+    }).exec().then((word) => {
+      resolve(word);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -93,12 +85,10 @@ const deleteWord = (glossaryName, word) => {
     return wordModel.findOneAndDelete({
       _id:      word._id,
       glossary: glossaryName,
-    }, {}, (err, word) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(word);
-      }
+    }, {}).exec().then((word) => {
+      resolve(word);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -107,12 +97,10 @@ const deleteGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
     return wordModel.deleteMany({
       glossary: glossaryName,
-    }, {}, (err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res);
-      }
+    }, {}).exec().then((res) => {
+      resolve(res);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -125,12 +113,10 @@ const updateGlossary = (oldGlossaryName, newGlossaryName) => {
       $set: {
         glossary: newGlossaryName,
       },
-    }, {}, (err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res);
-      }
+    }, {}).exec().then((res) => {
+      resolve(res);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };

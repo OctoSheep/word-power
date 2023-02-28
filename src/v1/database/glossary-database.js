@@ -15,12 +15,10 @@ const glossaryModel = require('../models/glossary');
 
 const getGlossaries = () => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.find({}, {}, {}, (err, glossaries) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(glossaries);
-      }
+    return glossaryModel.find({}, {}, {}).exec().then((glossaries) => {
+      resolve(glossaries);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -29,12 +27,10 @@ const getGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
     return glossaryModel.findOne({
       name: glossaryName,
-    }, {}, {}, (err, glossary) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(glossary);
-      }
+    }, {}, {}).exec().then((glossary) => {
+      resolve(glossary);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -46,12 +42,10 @@ const createGlossary = (body) => {
       description: body.description,
       vocabulary:  body.vocabulary,
     });
-    return glossaryModel.create([glossary], {}, (err, glossary) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(glossary);
-      }
+    return glossaryModel.create([glossary], {}).then((glossary) => {
+      resolve(glossary);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -65,12 +59,10 @@ const updateGlossary = (glossaryName, body) => {
         'name':        body.name,
         'description': body.description,
       },
-    }, {}, (err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res);
-      }
+    }, {}).exec().then((res) => {
+      resolve(res);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -79,12 +71,10 @@ const deleteGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
     return glossaryModel.deleteOne({
       name: glossaryName,
-    }, {}, (err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res);
-      }
+    }, {}).exec().then((res) => {
+      resolve(res);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -97,12 +87,10 @@ const addWordId = (glossaryName, word) => {
       $push: {
         'vocabularies': word._id,
       },
-    }, {}, (err, glossary) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(glossary);
-      }
+    }, {}).exec().then((glossary) => {
+      resolve(glossary);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
@@ -115,12 +103,10 @@ const deleteWordId = (glossaryName, word) => {
       $pull: {
         'vocabularies': word._id,
       },
-    }, {}, (err, glossary) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(glossary);
-      }
+    }, {}).exec().then((glossary) => {
+      resolve(glossary);
+    }).catch((err) => {
+      reject(err);
     });
   });
 };
