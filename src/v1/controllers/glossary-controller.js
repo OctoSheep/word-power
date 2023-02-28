@@ -169,10 +169,10 @@ const updateGlossary = (req, res) => {
   } else {
     glossaryService.updateGlossary(glossaryName, body).then((resolve) => {
       // console.log(resolve);
-      if (resolve.matchedCount === 0) {
+      if (typeof resolve === 'string') {
         res.status(404).send({
           status:  404,
-          message: 'Glossary not found.',
+          message: resolve,
           data:    null,
         });
       } else {
@@ -184,11 +184,19 @@ const updateGlossary = (req, res) => {
       }
     }).catch((reject) => {
       // console.log(reject);
-      res.status(500).send({
-        status:  500,
-        message: 'Internal server error.',
-        data:    reject,
-      });
+      if (reject.code === 11000) {
+        res.status(409).send({
+          status:  409,
+          message: 'Glossary ' + body.name + ' already exists.',
+          data:    null,
+        });
+      } else {
+        res.status(500).send({
+          status:  500,
+          message: 'Internal server error.',
+          data:    reject,
+        });
+      }
     });
   }
 };

@@ -11,6 +11,7 @@
  */
 
 const Glossary = require('../database/glossary-database');
+const Word     = require('../database/word-database');
 
 const getGlossaries = () => {
   return Glossary.getGlossaries().then((resolve) => {
@@ -31,8 +32,27 @@ const createGlossary = (body) => {
 };
 
 const updateGlossary = (glossaryName, body) => {
-  return Glossary.updateGlossary(glossaryName, body).then((resolve) => {
-    return resolve;
+  return Glossary.getGlossary(glossaryName).then((oldGlossary) => {
+    if (!oldGlossary) {
+      return Promise.resolve('Old glossary ' + glossaryName + ' not found.');
+    }
+    if (body.name !== undefined && body.name !== null) {
+      return Glossary.getGlossary(body.name).then((newGlossary) => {
+        if (newGlossary) {
+          return Promise.resolve(
+              'New glossary ' + body.name + ' already exists.');
+        }
+        return Word.updateGlossary(glossaryName, body.name).then(() => {
+          return Glossary.updateGlossary(glossaryName, body).then((res) => {
+            return res;
+          });
+        });
+      });
+    } else {
+      return Glossary.updateGlossary(glossaryName, body).then((res) => {
+        return res;
+      });
+    }
   });
 };
 

@@ -65,11 +65,11 @@ const updateGlossary = (glossaryName, body) => {
         'name':        body.name,
         'description': body.description,
       },
-    }, {}, (err, glossary) => {
+    }, {}, (err, res) => {
       if (err) {
         reject(err);
       } else {
-        resolve(glossary);
+        resolve(res);
       }
     });
   });

@@ -103,10 +103,29 @@ const deleteWord = (glossaryName, word) => {
   });
 };
 
+const updateGlossary = (oldGlossaryName, newGlossaryName) => {
+  return new Promise((resolve, reject) => {
+    return wordModel.updateMany({
+      glossary: oldGlossaryName,
+    }, {
+      $set: {
+        glossary: newGlossaryName,
+      },
+    }, {}, (err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+};
+
 module.exports = {
   getWords,
   getWord,
   createWord,
   updateWord,
   deleteWord,
+  updateGlossary,
 };
