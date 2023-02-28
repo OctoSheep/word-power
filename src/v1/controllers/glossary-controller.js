@@ -15,11 +15,25 @@ const glossaryService = require('../services/glossary-service');
 const getGlossaries = (req, res) => {
   glossaryService.getGlossaries().then((resolve) => {
     // console.log(resolve);
-    res.status(200).send({
-      status:  200,
-      message: 'Get all glossaries.',
-      data:    resolve,
-    });
+    if (typeof resolve === 'string') {
+      res.status(404).send({
+        status:  404,
+        message: resolve,
+        data:    null,
+      });
+    } else if (!resolve || resolve.length === 0) {
+      res.status(404).send({
+        status:  404,
+        message: 'No glossaries found.',
+        data:    null,
+      });
+    } else {
+      res.status(200).send({
+        status:  200,
+        message: 'Get all glossaries.',
+        data:    resolve,
+      });
+    }
   }).catch((reject) => {
     // console.log(reject);
     res.status(500).send({
@@ -35,10 +49,10 @@ const getGlossary = (req, res) => {
 
   glossaryService.getGlossary(glossaryName).then((resolve) => {
     // console.log(resolve);
-    if (resolve === null) {
+    if (typeof resolve === 'string') {
       res.status(404).send({
         status:  404,
-        message: 'Glossary not found.',
+        message: resolve,
         data:    null,
       });
     } else {
@@ -114,7 +128,7 @@ const createGlossary = (req, res) => {
       if (reject.code === 11000) {
         res.status(409).send({
           status:  409,
-          message: 'Glossary already exists.',
+          message: 'Glossary ' + body.name + ' already exists.',
           data:    null,
         });
       } else {

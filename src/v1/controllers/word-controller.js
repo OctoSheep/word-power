@@ -24,12 +24,12 @@ const getWords = (req, res) => {
       data:    null,
     });
   } else {
-    wordService.getWords(glossaryName, word, id).then((resolve) => {
+    wordService.getWords(glossaryName, id, word).then((resolve) => {
       // console.log(resolve);
-      if (resolve === null) {
+      if (typeof resolve === 'string') {
         res.status(404).send({
           status:  404,
-          message: 'Glossary not found.',
+          message: resolve,
           data:    null,
         });
       } else if (resolve.length === 0) {
@@ -61,10 +61,10 @@ const createWord = (req, res) => {
   const body         = req.body;
 
   wordService.createWord(glossaryName, body).then((resolve) => {
-    if (resolve === null) {
+    if (typeof resolve === 'string') {
       res.status(404).send({
         status:  404,
-        message: 'Glossary not found.',
+        message: resolve,
         data:    null,
       });
     } else {

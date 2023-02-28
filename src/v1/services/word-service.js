@@ -13,23 +13,13 @@
 const Glossary = require('../database/glossary-database');
 const Word     = require('../database/word-database');
 
-const getWords = (glossaryName, word, id) => {
+const getWords = (glossaryName, id, word) => {
   return Glossary.getGlossary(glossaryName).then((glossary) => {
     if (!glossary) {
-      return Promise.resolve(null);
+      return Promise.resolve('Glossary ' + glossaryName + ' not found.');
     }
-    return Word.getWords(glossary).then((words) => {
-      if (id !== undefined) {
-        return words.filter((w) => {
-          return w.id === id;
-        });
-      } else if (word !== undefined) {
-        return words.filter((w) => {
-          return w.word === word;
-        });
-      } else {
-        return words;
-      }
+    return Word.getWords(glossary, id, word).then((words) => {
+      return words;
     });
   });
 };
@@ -37,11 +27,11 @@ const getWords = (glossaryName, word, id) => {
 const createWord = (glossaryName, body) => {
   return Glossary.getGlossary(glossaryName).then((glossary) => {
     if (!glossary) {
-      return Promise.resolve(null);
+      return Promise.resolve('Glossary ' + glossaryName + ' not found.');
     }
-    return Word.createWord(glossaryName, body).then((word) => {
-      return Glossary.addWordId(glossaryName, word).then(() => {
-        return word;
+    return Word.createWord(glossaryName, body).then((words) => {
+      return Glossary.addWordId(glossaryName, words[0]._id).then(() => {
+        return words[0];
       });
     });
   });
@@ -62,10 +52,10 @@ const updateWord = (glossaryName, wordId, body) => {
           if (!oldWord) {
             return Promise.resolve('Word not found in ' + glossaryName + '.');
           }
-          return Glossary.deleteWordId(glossaryName, oldWord).then(() => {
-            return Word.updateWord(oldWord, body).then(() => {
-              return Glossary.addWordId(body.glossary, oldWord).then(() => {
-                return oldWord;
+          return Glossary.deleteWordId(glossaryName, oldWord._id).then(() => {
+            return Word.updateWord(oldWord, body).then((newWord) => {
+              return Glossary.addWordId(body.glossary, oldWord._id).then(() => {
+                return newWord;
               });
             });
           });
@@ -86,14 +76,14 @@ const updateWord = (glossaryName, wordId, body) => {
 const deleteWord = (glossaryName, wordId) => {
   return Glossary.getGlossary(glossaryName).then((glossary) => {
     if (!glossary) {
-      return Promise.resolve('Glossary not found.');
+      return Promise.resolve('Glossary ' + glossaryName + ' not found.');
     }
     return Word.getWord(glossaryName, wordId).then((word) => {
       if (!word) {
         return Promise.resolve('Word not found in ' + glossaryName + '.');
       }
-      return Glossary.deleteWordId(glossaryName, word).then(() => {
-        return Word.deleteWord(glossaryName, word).then(() => {
+      return Glossary.deleteWordId(glossaryName, word._id).then(() => {
+        return Word.deleteWord(glossaryName, word._id).then(() => {
           return word;
         });
       });

@@ -13,15 +13,35 @@
 require('./connection');
 const wordModel = require('../models/word');
 
-const getWords = (glossary) => {
+const getWords = (glossary, id, word) => {
   return new Promise((resolve, reject) => {
-    return wordModel.find({
-      'glossary': glossary.name,
-    }, {}, {}).exec().then((words) => {
-      resolve(words);
-    }).catch((err) => {
-      reject(err);
-    });
+    if (id) {
+      return wordModel.find({
+        '_id':      Object(id),
+        'glossary': glossary.name,
+      }, {}, {}).exec().then((words) => {
+        resolve(words);
+      }).catch((err) => {
+        reject(err);
+      });
+    } else if (word) {
+      return wordModel.find({
+        'word':     word,
+        'glossary': glossary.name,
+      }, {}, {}).exec().then((words) => {
+        resolve(words);
+      }).catch((err) => {
+        reject(err);
+      });
+    } else {
+      return wordModel.find({
+        'glossary': glossary.name,
+      }, {}, {}).exec().then((words) => {
+        resolve(words);
+      }).catch((err) => {
+        reject(err);
+      });
+    }
   });
 };
 
@@ -41,15 +61,15 @@ const getWord = (glossaryName, wordId) => {
 const createWord = (glossaryName, body) => {
   return new Promise((resolve, reject) => {
     const word = new wordModel({
-      word:        body.word,
+      glossary:    glossaryName,
       index:       body.index,
+      word:        body.word,
       phonetic_us: body.phonetic_us,
       phonetic_uk: body.phonetic_uk,
       translation: body.translation,
-      glossary:    glossaryName,
     });
-    return wordModel.create([word], {}).then((word) => {
-      resolve(word);
+    return wordModel.create([word], {}).then((words) => {
+      resolve(words);
     }).catch((err) => {
       reject(err);
     });
@@ -64,8 +84,8 @@ const updateWord = (oldWord, body) => {
     }, {
       $set: {
         glossary:    body.glossary,
-        word:        body.word,
         index:       body.index,
+        word:        body.word,
         phonetic_us: body.phonetic_us,
         phonetic_uk: body.phonetic_uk,
         translation: body.translation,
@@ -80,13 +100,14 @@ const updateWord = (oldWord, body) => {
   });
 };
 
-const deleteWord = (glossaryName, word) => {
+const deleteWord = (glossaryName, wordId) => {
   return new Promise((resolve, reject) => {
     return wordModel.findOneAndDelete({
-      _id:      word._id,
+      _id:      wordId,
       glossary: glossaryName,
-    }, {}).exec().then((word) => {
-      resolve(word);
+    }, {}).exec().then((res) => {
+      console.log(res);
+      resolve(res);
     }).catch((err) => {
       reject(err);
     });

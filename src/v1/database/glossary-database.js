@@ -42,8 +42,8 @@ const createGlossary = (body) => {
       description: body.description,
       vocabulary:  body.vocabulary,
     });
-    return glossaryModel.create([glossary], {}).then((glossary) => {
-      resolve(glossary);
+    return glossaryModel.create([glossary], {}).then((glossaries) => {
+      resolve(glossaries);
     }).catch((err) => {
       reject(err);
     });
@@ -79,32 +79,32 @@ const deleteGlossary = (glossaryName) => {
   });
 };
 
-const addWordId = (glossaryName, word) => {
+const addWordId = (glossaryName, wordId) => {
   return new Promise((resolve, reject) => {
     return glossaryModel.updateOne({
       name: glossaryName,
     }, {
       $push: {
-        'vocabularies': word._id,
+        vocabularies: wordId,
       },
-    }, {}).exec().then((glossary) => {
-      resolve(glossary);
+    }, {}).exec().then((res) => {
+      resolve(res);
     }).catch((err) => {
       reject(err);
     });
   });
 };
 
-const deleteWordId = (glossaryName, word) => {
+const deleteWordId = (glossaryName, wordId) => {
   return new Promise((resolve, reject) => {
     return glossaryModel.updateOne({
       name: glossaryName,
     }, {
       $pull: {
-        'vocabularies': word._id,
+        'vocabularies': wordId,
       },
-    }, {}).exec().then((glossary) => {
-      resolve(glossary);
+    }, {}).exec().then((res) => {
+      resolve(res);
     }).catch((err) => {
       reject(err);
     });

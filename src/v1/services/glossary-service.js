@@ -14,20 +14,24 @@ const Glossary = require('../database/glossary-database');
 const Word     = require('../database/word-database');
 
 const getGlossaries = () => {
-  return Glossary.getGlossaries().then((resolve) => {
-    return resolve;
+  return Glossary.getGlossaries().then((glossaries) => {
+    if (!glossaries) {
+      return Promise.resolve('No glossaries found.');
+    }
   });
 };
 
 const getGlossary = (glossaryName) => {
-  return Glossary.getGlossary(glossaryName).then((resolve) => {
-    return resolve;
+  return Glossary.getGlossary(glossaryName).then((glossary) => {
+    if (!glossary) {
+      return Promise.resolve('Glossary ' + glossaryName + ' not found.');
+    }
   });
 };
 
 const createGlossary = (body) => {
-  return Glossary.createGlossary(body).then((resolve) => {
-    return resolve;
+  return Glossary.createGlossary(body).then((glossaries) => {
+    return glossaries[0];
   });
 };
 
@@ -43,8 +47,10 @@ const updateGlossary = (glossaryName, body) => {
               'New glossary ' + body.name + ' already exists.');
         }
         return Word.updateGlossary(glossaryName, body.name).then(() => {
-          return Glossary.updateGlossary(glossaryName, body).then((res) => {
-            return res;
+          return Glossary.updateGlossary(glossaryName, body).then(() => {
+            return Glossary.getGlossary(body.name).then((glossary) => {
+              return glossary;
+            });
           });
         });
       });
@@ -62,8 +68,8 @@ const deleteGlossary = (glossaryName) => {
       return Promise.resolve('Glossary ' + glossaryName + ' not found.');
     }
     return Word.deleteGlossary(glossaryName).then(() => {
-      return Glossary.deleteGlossary(glossaryName).then((res) => {
-        return res;
+      return Glossary.deleteGlossary(glossaryName).then(() => {
+        return glossary;
       });
     });
   });
