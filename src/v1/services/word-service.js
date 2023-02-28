@@ -40,7 +40,7 @@ const createWord = (glossaryName, body) => {
       return Promise.resolve(null);
     }
     return Word.createWord(glossaryName, body).then((word) => {
-      return Glossary.addWord(glossaryName, word).then(() => {
+      return Glossary.addWordId(glossaryName, word).then(() => {
         return word;
       });
     });
@@ -61,9 +61,9 @@ const updateWord = (glossaryName, wordId, body) => {
           if (!oldWord) {
             return Promise.resolve('Word not found in ' + glossaryName + '.');
           }
-          return Glossary.deleteWord(glossaryName, oldWord).then(() => {
+          return Glossary.deleteWordId(glossaryName, oldWord).then(() => {
             return Word.updateWord(oldWord, body).then(() => {
-              return Glossary.addWord(body.glossary, oldWord).then(() => {
+              return Glossary.addWordId(body.glossary, oldWord).then(() => {
                 return oldWord;
               });
             });
@@ -91,7 +91,7 @@ const deleteWord = (glossaryName, wordId) => {
       if (!word) {
         return Promise.resolve('Word not found in ' + glossaryName + '.');
       }
-      return Glossary.deleteWord(glossaryName, word).then(() => {
+      return Glossary.deleteWordId(glossaryName, word).then(() => {
         return Word.deleteWord(glossaryName, word).then(() => {
           return word;
         });

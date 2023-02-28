@@ -89,7 +89,7 @@ const deleteGlossary = (glossaryName) => {
   });
 };
 
-const addWord = (glossaryName, word) => {
+const addWordId = (glossaryName, word) => {
   return new Promise((resolve, reject) => {
     return glossaryModel.updateOne({
       name: glossaryName,
@@ -107,7 +107,7 @@ const addWord = (glossaryName, word) => {
   });
 };
 
-const deleteWord = (glossaryName, word) => {
+const deleteWordId = (glossaryName, word) => {
   return new Promise((resolve, reject) => {
     return glossaryModel.updateOne({
       name: glossaryName,
@@ -131,6 +131,6 @@ module.exports = {
   createGlossary,
   updateGlossary,
   deleteGlossary,
-  addWord,
-  deleteWord,
+  addWordId,
+  deleteWordId,
 };
