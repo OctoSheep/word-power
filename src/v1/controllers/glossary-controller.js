@@ -206,10 +206,10 @@ const deleteGlossary = (req, res) => {
 
   glossaryService.deleteGlossary(glossaryName).then((resolve) => {
     // console.log(resolve);
-    if (resolve.deletedCount === 0) {
+    if (typeof resolve === 'string') {
       res.status(404).send({
         status:  404,
-        message: 'Glossary not found.',
+        message: resolve,
         data:    null,
       });
     } else {

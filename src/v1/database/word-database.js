@@ -103,6 +103,20 @@ const deleteWord = (glossaryName, word) => {
   });
 };
 
+const deleteGlossary = (glossaryName) => {
+  return new Promise((resolve, reject) => {
+    return wordModel.deleteMany({
+      glossary: glossaryName,
+    }, {}, (err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+};
+
 const updateGlossary = (oldGlossaryName, newGlossaryName) => {
   return new Promise((resolve, reject) => {
     return wordModel.updateMany({
@@ -127,5 +141,6 @@ module.exports = {
   createWord,
   updateWord,
   deleteWord,
+  deleteGlossary,
   updateGlossary,
 };

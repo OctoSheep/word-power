@@ -57,8 +57,15 @@ const updateGlossary = (glossaryName, body) => {
 };
 
 const deleteGlossary = (glossaryName) => {
-  return Glossary.deleteGlossary(glossaryName).then((resolve) => {
-    return resolve;
+  return Glossary.getGlossary(glossaryName).then((glossary) => {
+    if (!glossary) {
+      return Promise.resolve('Glossary ' + glossaryName + ' not found.');
+    }
+    return Word.deleteGlossary(glossaryName).then(() => {
+      return Glossary.deleteGlossary(glossaryName).then((res) => {
+        return res;
+      });
+    });
   });
 };
 

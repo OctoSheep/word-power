@@ -79,11 +79,11 @@ const deleteGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
     return glossaryModel.deleteOne({
       name: glossaryName,
-    }, {}, (err, glossary) => {
+    }, {}, (err, res) => {
       if (err) {
         reject(err);
       } else {
-        resolve(glossary);
+        resolve(res);
       }
     });
   });
