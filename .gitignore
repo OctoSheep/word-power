@@ -291,3 +291,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+### User defined
+# External Files
+external/*

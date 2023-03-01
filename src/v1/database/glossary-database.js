@@ -35,12 +35,12 @@ const getGlossary = (glossaryName) => {
   });
 };
 
-const createGlossary = (body) => {
+const createGlossary = (glossaryName, glossaryDescription) => {
   return new Promise((resolve, reject) => {
     const glossary = new glossaryModel({
-      name:        body.name,
-      description: body.description,
-      vocabulary:  body.vocabulary,
+      name:        glossaryName,
+      description: glossaryDescription,
+      vocabulary:  [],
     });
     return glossaryModel.create([glossary], {}).then((glossaries) => {
       resolve(glossaries);
@@ -95,6 +95,24 @@ const addWordId = (glossaryName, wordId) => {
   });
 };
 
+const addWordIds = (glossaryName, wordIds) => {
+  return new Promise((resolve, reject) => {
+    glossaryModel.updateOne({
+      name: glossaryName,
+    }, {
+      $push: {
+        vocabularies: {
+          $each: wordIds,
+        },
+      },
+    }, {}).exec().then((res) => {
+      resolve(res);
+    }).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
 const deleteWordId = (glossaryName, wordId) => {
   return new Promise((resolve, reject) => {
     return glossaryModel.updateOne({
@@ -118,5 +136,6 @@ module.exports = {
   updateGlossary,
   deleteGlossary,
   addWordId,
+  addWordIds,
   deleteWordId,
 };

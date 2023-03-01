@@ -95,50 +95,53 @@ const createGlossary = (req, res) => {
       message: 'Description is required.',
       data:    null,
     });
-  } else if (body.vocabularies === undefined || body.vocabularies === null) {
-    res.status(400).send({
-      status:  400,
-      message: 'Vocabularies are required.',
-      data:    null,
-    });
-  } else if (Array.isArray(body.vocabularies) === false) {
-    res.status(400).send({
-      status:  400,
-      message: 'Vocabularies must be an array.',
-      data:    null,
-    });
   } else {
-    glossaryService.createGlossary(body).then((resolve) => {
-      // console.log(resolve);
-      if (resolve === null) {
-        res.status(409).send({
-          status:  409,
-          message: 'Glossary already exists.',
+    let url = body.url;
+    if (url !== undefined && url !== null && url !== '') {
+      try {
+        url = new URL(url);
+      } catch (e) {
+        console.log(e);
+        res.status(400).send({
+          status:  400,
+          message: 'URL is invalid.',
           data:    null,
         });
-      } else {
-        res.status(201).send({
-          status:  201,
-          message: 'Create a new glossary.',
-          data:    resolve,
-        });
       }
-    }).catch((reject) => {
-      // console.log(reject);
-      if (reject.code === 11000) {
-        res.status(409).send({
-          status:  409,
-          message: 'Glossary ' + body.name + ' already exists.',
-          data:    null,
-        });
-      } else {
-        res.status(500).send({
-          status:  500,
-          message: 'Internal server error.',
-          data:    reject,
-        });
-      }
-    });
+    }
+    glossaryService.createGlossary(body.name, body.description, url).
+                    then((resolve) => {
+                      // console.log(resolve);
+                      if (resolve === null) {
+                        res.status(409).send({
+                          status:  409,
+                          message: 'Glossary already exists.',
+                          data:    null,
+                        });
+                      } else {
+                        res.status(201).send({
+                          status:  201,
+                          message: 'Create a new glossary.',
+                          data:    resolve,
+                        });
+                      }
+                    }).
+                    catch((reject) => {
+                      // console.log(reject);
+                      if (reject.code === 11000) {
+                        res.status(409).send({
+                          status:  409,
+                          message: 'Glossary ' + body.name + ' already exists.',
+                          data:    null,
+                        });
+                      } else {
+                        res.status(500).send({
+                          status:  500,
+                          message: 'Internal server error.',
+                          data:    reject,
+                        });
+                      }
+                    });
   }
 };
 

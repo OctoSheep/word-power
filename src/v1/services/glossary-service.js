@@ -10,8 +10,9 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const Glossary = require('../database/glossary-database');
-const Word     = require('../database/word-database');
+const Glossary      = require('../database/glossary-database');
+const Word          = require('../database/word-database');
+const githubService = require('./github-service');
 
 const getGlossaries = () => {
   return Glossary.getGlossaries().then((glossaries) => {
@@ -29,9 +30,33 @@ const getGlossary = (glossaryName) => {
   });
 };
 
-const createGlossary = (body) => {
-  return Glossary.createGlossary(body).then((glossaries) => {
-    return glossaries[0];
+const createGlossary = (glossaryName, glossaryDescription, url) => {
+  return Glossary.getGlossary(glossaryName).then((glossary) => {
+    if (glossary) {
+      return Promise.resolve('Glossary ' + glossaryName + ' already exists.');
+    }
+    if (!url) {
+      return Glossary.createGlossary(glossaryName, glossaryDescription).
+                      then((glossaries) => {
+                        return glossaries[0];
+                      });
+    }
+    return githubService.getJson(url).then((words) => {
+      return Glossary.createGlossary(glossaryName, glossaryDescription).
+                      then(() => {
+                        return Word.createWords(glossaryName, words).
+                                    then((ids) => {
+                                      return Glossary.addWordIds(glossaryName,
+                                          ids).then(() => {
+                                        return Glossary.getGlossary(
+                                            glossaryName).
+                                                        then((glossary) => {
+                                                          return glossary;
+                                                        });
+                                      });
+                                    });
+                      });
+    });
   });
 };
 

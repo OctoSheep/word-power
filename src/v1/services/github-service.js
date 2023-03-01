@@ -10,19 +10,20 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const {
-        connect,
-        connection,
-      } = require('mongoose');
+const getJson = (url) => {
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      headers: {
+        Authorization: 'Bearer ' + process.env.GITHUB_TOKEN,
+      },
+    }).then((words) => {
+      resolve(words.json());
+    }).catch((err) => {
+      reject(err);
+    });
+  });
+};
 
-connect(process.env.MONGO_URI).catch(err => {
-  console.log(err);
-});
-
-connection.on('error', err => {
-  console.log(err);
-});
-connection.once('open', () => {
-  console.log(
-      'Connected to MongoDB on ' + connection.host + ':' + connection.port);
-});
+module.exports = {
+  getJson,
+};

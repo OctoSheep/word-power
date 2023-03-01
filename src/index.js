@@ -10,7 +10,10 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
+const dotenv  = require('dotenv');
 const express = require('express');
+
+dotenv.config();
 
 const v1GlossaryRouter = require('./v1/routes/glossary-route');
 const v1WordRouter     = require('./v1/routes/word-route');
@@ -36,5 +39,5 @@ app.use('/v1/glossaries', v1GlossaryRouter);
 app.use('/v1/words', v1WordRouter);
 
 app.listen(port, () => {
-  console.log(`API is listening on port ${port}.`);
+  console.log('API is listening on port ' + port);
 });
