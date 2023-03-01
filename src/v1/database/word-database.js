@@ -76,6 +76,28 @@ const createWord = (glossaryName, body) => {
   });
 };
 
+const createWords = (glossaryName, words) => {
+  return new Promise((resolve, reject) => {
+    const wordsToCreate = [];
+    for (let i = 0; i < words.length; i++) {
+      const word = new wordModel({
+        glossary:    glossaryName,
+        index:       words[i].index,
+        word:        words[i].word,
+        phonetic_us: words[i].phonetic_us,
+        phonetic_uk: words[i].phonetic_uk,
+        translation: words[i].translation,
+      });
+      wordsToCreate.push(word);
+    }
+    wordModel.create(wordsToCreate, {}).then((words) => {
+      resolve(words.map(word => word._id));
+    }).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
 const updateWord = (oldWord, body) => {
   return new Promise((resolve, reject) => {
     return wordModel.findOneAndUpdate({
@@ -146,6 +168,7 @@ module.exports = {
   getWords,
   getWord,
   createWord,
+  createWords,
   updateWord,
   deleteWord,
   deleteGlossary,
