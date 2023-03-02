@@ -12,15 +12,20 @@
 
 const glossaryService = require('../services/glossary-service');
 
-const getGlossaries = (req, res) => {
-  glossaryService.getGlossaries().then((resolve) => {
-    // console.log(resolve);
-    res.status(200).send({
-      status:  200,
-      message: 'Get all glossaries.',
-      data:    resolve,
-    });
-  }).catch((reject) => {
+const getGlossaries = (
+  req,
+  res,
+) => {
+  glossaryService.getGlossaries(
+  ).then((resolve) => {
+      // console.log(resolve);
+      res.status(200).send({
+        status:  200,
+        message: 'Get all glossaries.',
+        data:    resolve,
+      });
+    },
+  ).catch((reject) => {
     // console.log(reject);
     if (typeof reject === 'object') {
       res.status(reject.status).send({
@@ -38,17 +43,23 @@ const getGlossaries = (req, res) => {
   });
 };
 
-const getGlossary = (req, res) => {
+const getGlossary = (
+  req,
+  res,
+) => {
   const glossaryName = req.params['glossaryName'];
 
-  glossaryService.getGlossary(glossaryName).then((resolve) => {
-    // console.log(resolve);
-    res.status(200).send({
-      status:  200,
-      message: 'Get an existing glossary.',
-      data:    resolve,
-    });
-  }).catch((reject) => {
+  glossaryService.getGlossary(
+    glossaryName,
+  ).then((resolve) => {
+      // console.log(resolve);
+      res.status(200).send({
+        status:  200,
+        message: 'Get an existing glossary.',
+        data:    resolve,
+      });
+    },
+  ).catch((reject) => {
     // console.log(reject);
     if (typeof reject === 'object') {
       res.status(reject.status).send({
@@ -66,7 +77,10 @@ const getGlossary = (req, res) => {
   });
 };
 
-const createGlossary = (req, res) => {
+const createGlossary = (
+  req,
+  res,
+) => {
   const body = req.body;
 
   if (body === undefined || body === null) {
@@ -103,35 +117,41 @@ const createGlossary = (req, res) => {
         });
       }
     }
-    glossaryService.createGlossary(body.name, body.description, url).
-                    then((resolve) => {
-                      // console.log(resolve);
-                      res.status(201).send({
-                        status:  201,
-                        message: 'Create a new glossary.',
-                        data:    resolve,
-                      });
-                    }).
-                    catch((reject) => {
-                      // console.log(reject);
-                      if (typeof reject === 'object') {
-                        res.status(reject.status).send({
-                          status:  reject.status,
-                          message: reject.message,
-                          data:    reject.data,
-                        });
-                      } else {
-                        res.status(500).send({
-                          status:  500,
-                          message: 'Internal server error.',
-                          data:    null,
-                        });
-                      }
-                    });
+    glossaryService.createGlossary(
+      body.name,
+      body.description,
+      url,
+    ).then((resolve) => {
+        // console.log(resolve);
+        res.status(201).send({
+          status:  201,
+          message: 'Create a new glossary.',
+          data:    resolve,
+        });
+      },
+    ).catch((reject) => {
+      // console.log(reject);
+      if (typeof reject === 'object') {
+        res.status(reject.status).send({
+          status:  reject.status,
+          message: reject.message,
+          data:    reject.data,
+        });
+      } else {
+        res.status(500).send({
+          status:  500,
+          message: 'Internal server error.',
+          data:    null,
+        });
+      }
+    });
   }
 };
 
-const updateGlossary = (req, res) => {
+const updateGlossary = (
+  req,
+  res,
+) => {
   const glossaryName = req.params['glossaryName'];
   const body         = req.body;
 
@@ -170,14 +190,18 @@ const updateGlossary = (req, res) => {
       data:    null,
     });
   } else {
-    glossaryService.updateGlossary(glossaryName, body).then((resolve) => {
-      // console.log(resolve);
-      res.status(200).send({
-        status:  200,
-        message: 'Update an existing glossary.',
-        data:    resolve,
-      });
-    }).catch((reject) => {
+    glossaryService.updateGlossary(
+      glossaryName,
+      body,
+    ).then((resolve) => {
+        // console.log(resolve);
+        res.status(200).send({
+          status:  200,
+          message: 'Update an existing glossary.',
+          data:    resolve,
+        });
+      },
+    ).catch((reject) => {
       // console.log(reject);
       if (typeof reject === 'object') {
         res.status(reject.status).send({
@@ -196,17 +220,23 @@ const updateGlossary = (req, res) => {
   }
 };
 
-const deleteGlossary = (req, res) => {
+const deleteGlossary = (
+  req,
+  res,
+) => {
   const glossaryName = req.params['glossaryName'];
 
-  glossaryService.deleteGlossary(glossaryName).then((resolve) => {
-    // console.log(resolve);
-    res.status(200).send({
-      status:  200,
-      message: 'Delete an existing glossary.',
-      data:    resolve,
-    });
-  }).catch((reject) => {
+  glossaryService.deleteGlossary(
+    glossaryName,
+  ).then((resolve) => {
+      // console.log(resolve);
+      res.status(200).send({
+        status:  200,
+        message: 'Delete an existing glossary.',
+        data:    resolve,
+      });
+    },
+  ).catch((reject) => {
     // console.log(reject);
     if (typeof reject === 'object') {
       res.status(reject.status).send({

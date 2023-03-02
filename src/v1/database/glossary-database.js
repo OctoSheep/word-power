@@ -14,116 +14,204 @@ require('./connection');
 const glossaryModel = require('../models/glossary');
 
 const getGlossaries = () => {
-  return new Promise((resolve, reject) => {
-    glossaryModel.find({}, {}, {}).exec().then((glossaries) => {
-      resolve(glossaries);
-    }).catch((err) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    glossaryModel.find(
+      {},
+      {},
+      {},
+    ).exec(
+    ).then((glossaries) => {
+        resolve(glossaries);
+      },
+    ).catch((err) => {
       reject(err);
     });
   });
 };
 
-const getGlossary = (glossaryName) => {
-  return new Promise((resolve, reject) => {
-    glossaryModel.findOne({
-      name: glossaryName,
-    }, {}, {}).exec().then((glossary) => {
-      resolve(glossary);
-    }).catch((err) => {
+const getGlossary = (
+  glossaryName,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    glossaryModel.findOne(
+      {
+        name: glossaryName,
+      },
+      {},
+      {},
+    ).exec(
+    ).then((glossary) => {
+        resolve(glossary);
+      },
+    ).catch((err) => {
       reject(err);
     });
   });
 };
 
-const createGlossary = (glossaryName, glossaryDescription) => {
-  return new Promise((resolve, reject) => {
+const createGlossary = (
+  glossaryName,
+  glossaryDescription,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
     const glossary = new glossaryModel({
       name:        glossaryName,
       description: glossaryDescription,
       vocabulary:  [],
     });
-    glossaryModel.create([glossary], {}).then((glossaries) => {
-      resolve(glossaries);
-    }).catch((err) => {
-      reject(err);
-    });
-  });
-};
-
-const updateGlossary = (glossaryName, body) => {
-  return new Promise((resolve, reject) => {
-    glossaryModel.updateOne({
-      name: glossaryName,
-    }, {
-      $set: {
-        'name':        body.name,
-        'description': body.description,
+    glossaryModel.create(
+      [glossary],
+      {},
+    ).then((glossaries) => {
+        resolve(glossaries);
       },
-    }, {}).exec().then((res) => {
-      resolve(res);
-    }).catch((err) => {
+    ).catch((err) => {
       reject(err);
     });
   });
 };
 
-const deleteGlossary = (glossaryName) => {
-  return new Promise((resolve, reject) => {
-    glossaryModel.deleteOne({
-      name: glossaryName,
-    }, {}).exec().then((res) => {
-      resolve(res);
-    }).catch((err) => {
-      reject(err);
-    });
-  });
-};
-
-const addWordId = (glossaryName, wordId) => {
-  return new Promise((resolve, reject) => {
-    glossaryModel.updateOne({
-      name: glossaryName,
-    }, {
-      $push: {
-        vocabularies: wordId,
+const updateGlossary = (
+  glossaryName,
+  body,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    glossaryModel.updateOne(
+      {
+        name: glossaryName,
       },
-    }, {}).exec().then((res) => {
-      resolve(res);
-    }).catch((err) => {
-      reject(err);
-    });
-  });
-};
-
-const addWordIds = (glossaryName, wordIds) => {
-  return new Promise((resolve, reject) => {
-    glossaryModel.updateOne({
-      name: glossaryName,
-    }, {
-      $push: {
-        vocabularies: {
-          $each: wordIds,
+      {
+        $set: {
+          'name':        body.name,
+          'description': body.description,
         },
       },
-    }, {}).exec().then((res) => {
-      resolve(res);
-    }).catch((err) => {
+      {},
+    ).exec(
+    ).then((res) => {
+        resolve(res);
+      },
+    ).catch((err) => {
       reject(err);
     });
   });
 };
 
-const deleteWordId = (glossaryName, wordId) => {
-  return new Promise((resolve, reject) => {
-    glossaryModel.updateOne({
-      name: glossaryName,
-    }, {
-      $pull: {
-        'vocabularies': wordId,
+const deleteGlossary = (
+  glossaryName,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    glossaryModel.deleteOne(
+      {
+        name: glossaryName,
       },
-    }, {}).exec().then((res) => {
-      resolve(res);
-    }).catch((err) => {
+      {},
+    ).exec(
+    ).then((res) => {
+        resolve(res);
+      },
+    ).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
+const addWordId = (
+  glossaryName,
+  wordId,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    glossaryModel.updateOne(
+      {
+        name: glossaryName,
+      },
+      {
+        $push: {
+          vocabularies: wordId,
+        },
+      },
+      {},
+    ).exec(
+    ).then((res) => {
+        resolve(res);
+      },
+    ).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
+const addWordIds = (
+  glossaryName,
+  wordIds,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    glossaryModel.updateOne(
+      {
+        name: glossaryName,
+      },
+      {
+        $push: {
+          vocabularies: {
+            $each: wordIds,
+          },
+        },
+      },
+      {},
+    ).exec(
+    ).then((res) => {
+        resolve(res);
+      },
+    ).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
+const deleteWordId = (
+  glossaryName,
+  wordId,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    glossaryModel.updateOne(
+      {
+        name: glossaryName,
+      },
+      {
+        $pull: {
+          'vocabularies': wordId,
+        },
+      },
+      {},
+    ).exec(
+    ).then((res) => {
+        resolve(res);
+      },
+    ).catch((err) => {
       reject(err);
     });
   });

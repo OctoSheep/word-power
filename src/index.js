@@ -21,23 +21,40 @@ const v1WordRouter     = require('./v1/routes/word-route');
 const app  = express();
 const port = process.env.PORT || 3000;
 
-app.use((req, res, next) => {
-  express.json()(req, res, err => {
-    if (err) {
-      // console.error(err);
-      return res.status(400).send({
-        status:  400,
-        message: 'Bad request. Invalid JSON.',
-        data:    null,
-      });
-    }
-    next();
-  });
+app.use((
+  req,
+  res,
+  next,
+) => {
+  express.json()(
+    req,
+    res,
+    err => {
+      if (err) {
+        // console.error(err);
+        return res.status(400).send({
+          status:  400,
+          message: 'Bad request. Invalid JSON.',
+          data:    null,
+        });
+      }
+      next();
+    },
+  );
 });
 
-app.use('/v1/glossaries', v1GlossaryRouter);
-app.use('/v1/words', v1WordRouter);
+app.use(
+  '/v1/glossaries',
+  v1GlossaryRouter,
+);
+app.use(
+  '/v1/words',
+  v1WordRouter,
+);
 
-app.listen(port, () => {
-  console.log('API is listening on port ' + port);
-});
+app.listen(
+  port,
+  () => {
+    console.log('API is listening on port ' + port);
+  },
+);

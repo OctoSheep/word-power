@@ -12,7 +12,10 @@
 
 const wordService = require('../services/word-service');
 
-const getWords = (req, res) => {
+const getWords = (
+  req,
+  res,
+) => {
   const glossaryName = req.params['glossaryName'];
   const word         = req.query['word'];
   const id           = req.query['id'];
@@ -24,7 +27,11 @@ const getWords = (req, res) => {
       data:    null,
     });
   } else {
-    wordService.getWords(glossaryName, id, word).then((resolve) => {
+    wordService.getWords(
+      glossaryName,
+      id,
+      word,
+    ).then((resolve) => {
       // console.log(resolve);
       res.status(200).send({
         status:  200,
@@ -50,7 +57,10 @@ const getWords = (req, res) => {
   }
 };
 
-const createWord = (req, res) => {
+const createWord = (
+  req,
+  res,
+) => {
   const glossaryName = req.params['glossaryName'];
   const body         = req.body;
 
@@ -116,7 +126,10 @@ const createWord = (req, res) => {
       }
     }
   } else {
-    wordService.createWord(glossaryName, body).then((resolve) => {
+    wordService.createWord(
+      glossaryName,
+      body,
+    ).then((resolve) => {
       // console.log(resolve);
       res.status(200).send({
         status:  200,
@@ -142,7 +155,10 @@ const createWord = (req, res) => {
   }
 };
 
-const updateWord = (req, res) => {
+const updateWord = (
+  req,
+  res,
+) => {
   const glossaryName = req.params['glossaryName'];
   const wordId       = req.params['wordId'];
   const body         = req.body;
@@ -220,7 +236,11 @@ const updateWord = (req, res) => {
       }
     }
   } else {
-    wordService.updateWord(glossaryName, wordId, body).then((resolve) => {
+    wordService.updateWord(
+      glossaryName,
+      wordId,
+      body,
+    ).then((resolve) => {
       // console.log(resolve);
       res.status(200).send({
         status:  200,
@@ -246,7 +266,10 @@ const updateWord = (req, res) => {
   }
 };
 
-const deleteWord = (req, res) => {
+const deleteWord = (
+  req,
+  res,
+) => {
   const glossaryName = req.params['glossaryName'];
   const wordId       = req.params['wordId'];
 
@@ -257,7 +280,10 @@ const deleteWord = (req, res) => {
       data:    null,
     });
   } else {
-    wordService.deleteWord(glossaryName, wordId).then((resolve) => {
+    wordService.deleteWord(
+      glossaryName,
+      wordId,
+    ).then((resolve) => {
       // console.log(resolve);
       res.status(200).send({
         status:  200,

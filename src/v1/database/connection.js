@@ -19,10 +19,16 @@ connect(process.env.MONGO_URI).catch(err => {
   console.log(err);
 });
 
-connection.on('error', err => {
-  console.log(err);
-});
-connection.once('open', () => {
-  console.log(
+connection.on(
+  'error',
+  err => {
+    console.log(err);
+  },
+);
+connection.once(
+  'open',
+  () => {
+    console.log(
       'Connected to MongoDB on ' + connection.host + ':' + connection.port);
-});
+  },
+);

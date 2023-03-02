@@ -44,6 +44,9 @@ const wordSchema = mongoose.Schema({
     }],
 });
 
-const wordModel = mongoose.model('Word', wordSchema);
+const wordModel = mongoose.model(
+  'Word',
+  wordSchema,
+);
 
 module.exports = wordModel;

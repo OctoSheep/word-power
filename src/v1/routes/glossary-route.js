@@ -14,14 +14,29 @@ const express            = require('express');
 const router             = express.Router();
 const glossaryController = require('../controllers/glossary-controller');
 
-router.get('/', glossaryController.getGlossaries);
+router.get(
+  '/',
+  glossaryController.getGlossaries,
+);
 
-router.get('/:glossaryName', glossaryController.getGlossary);
+router.get(
+  '/:glossaryName',
+  glossaryController.getGlossary,
+);
 
-router.post('/', glossaryController.createGlossary);
+router.post(
+  '/',
+  glossaryController.createGlossary,
+);
 
-router.patch('/:glossaryName', glossaryController.updateGlossary);
+router.patch(
+  '/:glossaryName',
+  glossaryController.updateGlossary,
+);
 
-router.delete('/:glossaryName', glossaryController.deleteGlossary);
+router.delete(
+  '/:glossaryName',
+  glossaryController.deleteGlossary,
+);
 
 module.exports = router;

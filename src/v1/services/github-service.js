@@ -11,14 +11,21 @@
  */
 
 const getJson = (url) => {
-  return new Promise((resolve, reject) => {
-    fetch(url, {
-      headers: {
-        Authorization: 'Bearer ' + process.env.GITHUB_TOKEN,
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    fetch(
+      url,
+      {
+        headers: {
+          Authorization: 'Bearer ' + process.env.GITHUB_TOKEN,
+        },
       },
-    }).then((words) => {
-      resolve(words.json());
-    }).catch((err) => {
+    ).then((words) => {
+        resolve(words.json());
+      },
+    ).catch((err) => {
       reject(err);
     });
   });

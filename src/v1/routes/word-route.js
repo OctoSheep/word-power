@@ -14,12 +14,24 @@ const express        = require('express');
 const router         = express.Router();
 const wordController = require('../controllers/word-controller');
 
-router.get('/:glossaryName', wordController.getWords);
+router.get(
+  '/:glossaryName',
+  wordController.getWords,
+);
 
-router.post('/:glossaryName', wordController.createWord);
+router.post(
+  '/:glossaryName',
+  wordController.createWord,
+);
 
-router.patch('/:glossaryName/:wordId', wordController.updateWord);
+router.patch(
+  '/:glossaryName/:wordId',
+  wordController.updateWord,
+);
 
-router.delete('/:glossaryName/:wordId', wordController.deleteWord);
+router.delete(
+  '/:glossaryName/:wordId',
+  wordController.deleteWord,
+);
 
 module.exports = router;

@@ -15,7 +15,10 @@ const Word          = require('../database/word-database');
 const githubService = require('./github-service');
 
 const getGlossaries = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
     Glossary.getGlossaries().then((glossaries) => {
       if (!glossaries) {
         reject({
@@ -30,9 +33,16 @@ const getGlossaries = () => {
   });
 };
 
-const getGlossary = (glossaryName) => {
-  return new Promise((resolve, reject) => {
-    Glossary.getGlossary(glossaryName).then((glossary) => {
+const getGlossary = (
+  glossaryName,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    Glossary.getGlossary(
+      glossaryName,
+    ).then((glossary) => {
       if (!glossary) {
         reject({
           status:  404,
@@ -46,9 +56,18 @@ const getGlossary = (glossaryName) => {
   });
 };
 
-const createGlossary = (glossaryName, glossaryDescription, url) => {
-  return new Promise((resolve, reject) => {
-    Glossary.getGlossary(glossaryName).then((glossary) => {
+const createGlossary = (
+  glossaryName,
+  glossaryDescription,
+  url,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    Glossary.getGlossary(
+      glossaryName,
+    ).then((glossary) => {
       if (glossary) {
         reject({
           status:  409,
@@ -56,31 +75,53 @@ const createGlossary = (glossaryName, glossaryDescription, url) => {
           data:    null,
         });
       } else if (!url) {
-        Glossary.createGlossary(glossaryName, glossaryDescription).
-                 then((glossaries) => {
-                   resolve(glossaries[0]);
-                 });
+        Glossary.createGlossary(
+          glossaryName,
+          glossaryDescription,
+        ).then((glossaries) => {
+          resolve(glossaries[0]);
+        });
       } else {
-        githubService.getJson(url).then((words) => {
-          Glossary.createGlossary(glossaryName, glossaryDescription).
-                   then(() => {
-                     Word.createWords(glossaryName, words).then((ids) => {
-                       Glossary.addWordIds(glossaryName, ids).then(() => {
-                         Glossary.getGlossary(glossaryName).then((glossary) => {
-                           resolve(glossary);
-                         });
-                       });
-                     });
-                   });
+        githubService.getJson(
+          url,
+        ).then((words) => {
+          Glossary.createGlossary(
+            glossaryName,
+            glossaryDescription,
+          ).then(() => {
+            Word.createWords(
+              glossaryName,
+              words,
+            ).then((ids) => {
+              Glossary.addWordIds(
+                glossaryName,
+                ids,
+              ).then(() => {
+                Glossary.getGlossary(
+                  glossaryName,
+                ).then((glossary) => {
+                  resolve(glossary);
+                });
+              });
+            });
+          });
         });
       }
     });
   });
 };
 
-const updateGlossary = (glossaryName, body) => {
-  return new Promise((resolve, reject) => {
-    Glossary.getGlossary(glossaryName).then((oldGlossary) => {
+const updateGlossary = (
+  glossaryName,
+  body,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    Glossary.getGlossary(
+      glossaryName,
+    ).then((oldGlossary) => {
       if (!oldGlossary) {
         reject({
           status:  404,
@@ -88,7 +129,9 @@ const updateGlossary = (glossaryName, body) => {
           data:    null,
         });
       } else if (body.name !== undefined && body.name !== null) {
-        Glossary.getGlossary(body.name).then((newGlossary) => {
+        Glossary.getGlossary(
+          body.name,
+        ).then((newGlossary) => {
           if (newGlossary) {
             reject({
               status:  409,
@@ -96,9 +139,17 @@ const updateGlossary = (glossaryName, body) => {
               data:    null,
             });
           } else {
-            Word.updateGlossary(glossaryName, body.name).then(() => {
-              Glossary.updateGlossary(glossaryName, body).then(() => {
-                Glossary.getGlossary(body.name).then((glossary) => {
+            Word.updateGlossary(
+              glossaryName,
+              body.name,
+            ).then(() => {
+              Glossary.updateGlossary(
+                glossaryName,
+                body,
+              ).then(() => {
+                Glossary.getGlossary(
+                  body.name,
+                ).then((glossary) => {
                   resolve(glossary);
                 });
               });
@@ -106,8 +157,13 @@ const updateGlossary = (glossaryName, body) => {
           }
         });
       } else {
-        Glossary.updateGlossary(glossaryName, body).then(() => {
-          Glossary.getGlossary(glossaryName).then((glossary) => {
+        Glossary.updateGlossary(
+          glossaryName,
+          body,
+        ).then(() => {
+          Glossary.getGlossary(
+            glossaryName,
+          ).then((glossary) => {
             resolve(glossary);
           });
         });
@@ -116,9 +172,16 @@ const updateGlossary = (glossaryName, body) => {
   });
 };
 
-const deleteGlossary = (glossaryName) => {
-  return new Promise((resolve, reject) => {
-    Glossary.getGlossary(glossaryName).then((glossary) => {
+const deleteGlossary = (
+  glossaryName,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    Glossary.getGlossary(
+      glossaryName,
+    ).then((glossary) => {
       if (!glossary) {
         reject({
           status:  404,
@@ -126,8 +189,12 @@ const deleteGlossary = (glossaryName) => {
           data:    null,
         });
       } else {
-        Word.deleteGlossary(glossaryName).then(() => {
-          Glossary.deleteGlossary(glossaryName).then(() => {
+        Word.deleteGlossary(
+          glossaryName,
+        ).then(() => {
+          Glossary.deleteGlossary(
+            glossaryName,
+          ).then(() => {
             resolve(glossary);
           });
         });

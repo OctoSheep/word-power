@@ -13,9 +13,18 @@
 const Glossary = require('../database/glossary-database');
 const Word     = require('../database/word-database');
 
-const getWords = (glossaryName, id, word) => {
-  return new Promise((resolve, reject) => {
-    Glossary.getGlossary(glossaryName).then((glossary) => {
+const getWords = (
+  glossaryName,
+  id,
+  word,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    Glossary.getGlossary(
+      glossaryName,
+    ).then((glossary) => {
       if (!glossary) {
         reject({
           status:  404,
@@ -23,7 +32,11 @@ const getWords = (glossaryName, id, word) => {
           data:    null,
         });
       } else {
-        Word.getWords(glossary, id, word).then((words) => {
+        Word.getWords(
+          glossary,
+          id,
+          word,
+        ).then((words) => {
           if (words.length === 0) {
             reject({
               status:  404,
@@ -39,9 +52,17 @@ const getWords = (glossaryName, id, word) => {
   });
 };
 
-const createWord = (glossaryName, body) => {
-  return new Promise((resolve, reject) => {
-    Glossary.getGlossary(glossaryName).then((glossary) => {
+const createWord = (
+  glossaryName,
+  body,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    Glossary.getGlossary(
+      glossaryName,
+    ).then((glossary) => {
       if (!glossary) {
         reject({
           status:  404,
@@ -49,31 +70,48 @@ const createWord = (glossaryName, body) => {
           data:    null,
         });
       } else {
-        Word.getWordByNameOrIndex(glossaryName, body.name, body.index).
-             then((word) => {
-               if (word) {
-                 reject({
-                   status:  409,
-                   message: 'Word or index already exists in ' + glossaryName
-                            + '.',
-                   data:    null,
-                 });
-               } else {
-                 Word.createWord(glossaryName, body).then((words) => {
-                   Glossary.addWordId(glossaryName, words[0]._id).then(() => {
-                     resolve(words[0]);
-                   });
-                 });
-               }
-             });
+        Word.getWordByNameOrIndex(
+          glossaryName,
+          body.name,
+          body.index,
+        ).then((word) => {
+          if (word) {
+            reject({
+              status:  409,
+              message: 'Word or index already exists in ' + glossaryName + '.',
+              data:    null,
+            });
+          } else {
+            Word.createWord(
+              glossaryName,
+              body,
+            ).then((words) => {
+              Glossary.addWordId(
+                glossaryName,
+                words[0]._id,
+              ).then(() => {
+                resolve(words[0]);
+              });
+            });
+          }
+        });
       }
     });
   });
 };
 
-const updateWord = (glossaryName, wordId, body) => {
-  return new Promise((resolve, reject) => {
-    Glossary.getGlossary(glossaryName).then((oldGlossary) => {
+const updateWord = (
+  glossaryName,
+  wordId,
+  body,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    Glossary.getGlossary(
+      glossaryName,
+    ).then((oldGlossary) => {
       if (!oldGlossary) {
         reject({
           status:  404,
@@ -81,7 +119,9 @@ const updateWord = (glossaryName, wordId, body) => {
           data:    null,
         });
       } else if (body.glossary !== undefined && body.glossary !== null) {
-        Glossary.getGlossary(body.glossary).then((newGlossary) => {
+        Glossary.getGlossary(
+          body.glossary,
+        ).then((newGlossary) => {
           if (!newGlossary) {
             reject({
               status:  404,
@@ -89,7 +129,10 @@ const updateWord = (glossaryName, wordId, body) => {
               data:    null,
             });
           } else {
-            Word.getWordById(glossaryName, wordId).then((oldWord) => {
+            Word.getWordById(
+              glossaryName,
+              wordId,
+            ).then((oldWord) => {
               if (!oldWord) {
                 reject({
                   status:  404,
@@ -98,32 +141,50 @@ const updateWord = (glossaryName, wordId, body) => {
                 });
               } else if ((body.word !== undefined && body.word !== null)
                          || (body.index !== undefined && body.index !== null)) {
-                Word.getWordByNameOrIndex(body.glossary, body.word, body.index).
-                     then((word) => {
-                       if (word) {
-                         reject({
-                           status:  409,
-                           message: 'Word or index already exists in '
-                                    + body.glossary + '.',
-                           data:    null,
-                         });
-                       } else {
-                         Glossary.deleteWordId(glossaryName, oldWord._id).
-                                  then(() => {
-                                    Word.updateWord(oldWord, body).
-                                         then((newWord) => {
-                                           Glossary.addWordId(body.glossary,
-                                               oldWord._id).then(() => {
-                                             resolve(newWord);
-                                           });
-                                         });
-                                  });
-                       }
-                     });
+                Word.getWordByNameOrIndex(
+                  body.glossary,
+                  body.word,
+                  body.index,
+                ).then((word) => {
+                  if (word) {
+                    reject({
+                      status:  409,
+                      message: 'Word or index already exists in '
+                               + body.glossary + '.',
+                      data:    null,
+                    });
+                  } else {
+                    Glossary.deleteWordId(
+                      glossaryName,
+                      oldWord._id,
+                    ).then(() => {
+                      Word.updateWord(
+                        oldWord,
+                        body,
+                      ).then((newWord) => {
+                        Glossary.addWordId(
+                          body.glossary,
+                          oldWord._id,
+                        ).then(() => {
+                          resolve(newWord);
+                        });
+                      });
+                    });
+                  }
+                });
               } else {
-                Glossary.deleteWordId(glossaryName, oldWord._id).then(() => {
-                  Word.updateWord(oldWord, body).then((newWord) => {
-                    Glossary.addWordId(body.glossary, oldWord._id).then(() => {
+                Glossary.deleteWordId(
+                  glossaryName,
+                  oldWord._id,
+                ).then(() => {
+                  Word.updateWord(
+                    oldWord,
+                    body,
+                  ).then((newWord) => {
+                    Glossary.addWordId(
+                      body.glossary,
+                      oldWord._id,
+                    ).then(() => {
                       resolve(newWord);
                     });
                   });
@@ -133,7 +194,10 @@ const updateWord = (glossaryName, wordId, body) => {
           }
         });
       } else {
-        Word.getWordById(glossaryName, wordId).then((oldWord) => {
+        Word.getWordById(
+          glossaryName,
+          wordId,
+        ).then((oldWord) => {
           if (!oldWord) {
             reject({
               status:  404,
@@ -142,23 +206,32 @@ const updateWord = (glossaryName, wordId, body) => {
             });
           } else if ((body.word !== undefined && body.word !== null)
                      || (body.index !== undefined && body.index !== null)) {
-            Word.getWordByNameOrIndex(glossaryName, body.word, body.index).
-                 then((word) => {
-                   if (word) {
-                     reject({
-                       status:  409,
-                       message: 'Word or index already exists in '
-                                + glossaryName + '.',
-                       data:    null,
-                     });
-                   } else {
-                     Word.updateWord(oldWord, body).then((newWord) => {
-                       resolve(newWord);
-                     });
-                   }
-                 });
+            Word.getWordByNameOrIndex(
+              glossaryName,
+              body.word,
+              body.index,
+            ).then((word) => {
+              if (word) {
+                reject({
+                  status:  409,
+                  message: 'Word or index already exists in ' + glossaryName
+                           + '.',
+                  data:    null,
+                });
+              } else {
+                Word.updateWord(
+                  oldWord,
+                  body,
+                ).then((newWord) => {
+                  resolve(newWord);
+                });
+              }
+            });
           } else {
-            Word.updateWord(oldWord, body).then((newWord) => {
+            Word.updateWord(
+              oldWord,
+              body,
+            ).then((newWord) => {
               resolve(newWord);
             });
           }
@@ -168,9 +241,17 @@ const updateWord = (glossaryName, wordId, body) => {
   });
 };
 
-const deleteWord = (glossaryName, wordId) => {
-  return new Promise((resolve, reject) => {
-    Glossary.getGlossary(glossaryName).then((glossary) => {
+const deleteWord = (
+  glossaryName,
+  wordId,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    Glossary.getGlossary(
+      glossaryName,
+    ).then((glossary) => {
       if (!glossary) {
         reject({
           status:  404,
@@ -178,7 +259,10 @@ const deleteWord = (glossaryName, wordId) => {
           data:    null,
         });
       } else {
-        Word.getWordById(glossaryName, wordId).then((word) => {
+        Word.getWordById(
+          glossaryName,
+          wordId,
+        ).then((word) => {
           if (!word) {
             reject({
               status:  404,
@@ -186,8 +270,14 @@ const deleteWord = (glossaryName, wordId) => {
               data:    null,
             });
           } else {
-            Glossary.deleteWordId(glossaryName, word._id).then(() => {
-              Word.deleteWord(glossaryName, word._id).then(() => {
+            Glossary.deleteWordId(
+              glossaryName,
+              word._id,
+            ).then(() => {
+              Word.deleteWord(
+                glossaryName,
+                word._id,
+              ).then(() => {
                 resolve(word);
               });
             });
