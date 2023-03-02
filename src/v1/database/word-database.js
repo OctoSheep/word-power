@@ -16,7 +16,7 @@ const wordModel = require('../models/word');
 const getWords = (glossary, id, word) => {
   return new Promise((resolve, reject) => {
     if (id) {
-      return wordModel.find({
+      wordModel.find({
         '_id':      Object(id),
         'glossary': glossary.name,
       }, {}, {}).exec().then((words) => {
@@ -25,7 +25,7 @@ const getWords = (glossary, id, word) => {
         reject(err);
       });
     } else if (word) {
-      return wordModel.find({
+      wordModel.find({
         'word':     word,
         'glossary': glossary.name,
       }, {}, {}).exec().then((words) => {
@@ -34,7 +34,7 @@ const getWords = (glossary, id, word) => {
         reject(err);
       });
     } else {
-      return wordModel.find({
+      wordModel.find({
         'glossary': glossary.name,
       }, {}, {}).exec().then((words) => {
         resolve(words);
@@ -45,11 +45,30 @@ const getWords = (glossary, id, word) => {
   });
 };
 
-const getWord = (glossaryName, wordId) => {
+const getWordById = (glossaryName, wordId) => {
   return new Promise((resolve, reject) => {
-    return wordModel.findOne({
+    wordModel.findOne({
       '_id':      Object(wordId),
       'glossary': glossaryName,
+    }, {}, {}).exec().then((word) => {
+      resolve(word);
+    }).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
+const getWordByNameOrIndex = (glossaryName, wordName, wordIndex) => {
+  return new Promise((resolve, reject) => {
+    wordModel.findOne({
+      $or: [
+        {
+          'word':     wordName,
+          'glossary': glossaryName,
+        }, {
+          'index':    wordIndex,
+          'glossary': glossaryName,
+        }],
     }, {}, {}).exec().then((word) => {
       resolve(word);
     }).catch((err) => {
@@ -68,7 +87,7 @@ const createWord = (glossaryName, body) => {
       phonetic_uk: body.phonetic_uk,
       translation: body.translation,
     });
-    return wordModel.create([word], {}).then((words) => {
+    wordModel.create([word], {}).then((words) => {
       resolve(words);
     }).catch((err) => {
       reject(err);
@@ -100,7 +119,7 @@ const createWords = (glossaryName, words) => {
 
 const updateWord = (oldWord, body) => {
   return new Promise((resolve, reject) => {
-    return wordModel.findOneAndUpdate({
+    wordModel.findOneAndUpdate({
       _id:      oldWord._id,
       glossary: oldWord.glossary,
     }, {
@@ -124,7 +143,7 @@ const updateWord = (oldWord, body) => {
 
 const deleteWord = (glossaryName, wordId) => {
   return new Promise((resolve, reject) => {
-    return wordModel.findOneAndDelete({
+    wordModel.findOneAndDelete({
       _id:      wordId,
       glossary: glossaryName,
     }, {}).exec().then((res) => {
@@ -138,7 +157,7 @@ const deleteWord = (glossaryName, wordId) => {
 
 const deleteGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
-    return wordModel.deleteMany({
+    wordModel.deleteMany({
       glossary: glossaryName,
     }, {}).exec().then((res) => {
       resolve(res);
@@ -150,7 +169,7 @@ const deleteGlossary = (glossaryName) => {
 
 const updateGlossary = (oldGlossaryName, newGlossaryName) => {
   return new Promise((resolve, reject) => {
-    return wordModel.updateMany({
+    wordModel.updateMany({
       glossary: oldGlossaryName,
     }, {
       $set: {
@@ -166,7 +185,8 @@ const updateGlossary = (oldGlossaryName, newGlossaryName) => {
 
 module.exports = {
   getWords,
-  getWord,
+  getWordById,
+  getWordByNameOrIndex,
   createWord,
   createWords,
   updateWord,

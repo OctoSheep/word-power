@@ -26,32 +26,26 @@ const getWords = (req, res) => {
   } else {
     wordService.getWords(glossaryName, id, word).then((resolve) => {
       // console.log(resolve);
-      if (typeof resolve === 'string') {
-        res.status(404).send({
-          status:  404,
-          message: resolve,
-          data:    null,
-        });
-      } else if (resolve.length === 0) {
-        res.status(200).send({
-          status:  200,
-          message: 'No matching words found in ' + glossaryName + '.',
-          data:    null,
-        });
-      } else {
-        res.status(200).send({
-          status:  200,
-          message: 'Get all matching words in ' + glossaryName + '.',
-          data:    resolve,
-        });
-      }
+      res.status(200).send({
+        status:  200,
+        message: 'Get all matching words in ' + glossaryName + '.',
+        data:    resolve,
+      });
     }).catch((reject) => {
       // console.log(reject);
-      res.status(500).send({
-        status:  500,
-        message: 'Internal server error.',
-        data:    reject,
-      });
+      if (typeof reject === 'object') {
+        res.status(reject.status).send({
+          status:  reject.status,
+          message: reject.message,
+          data:    reject.data,
+        });
+      } else {
+        res.status(500).send({
+          status:  500,
+          message: 'Internal server error.',
+          data:    null,
+        });
+      }
     });
   }
 };
@@ -60,36 +54,92 @@ const createWord = (req, res) => {
   const glossaryName = req.params['glossaryName'];
   const body         = req.body;
 
-  wordService.createWord(glossaryName, body).then((resolve) => {
-    if (typeof resolve === 'string') {
-      res.status(404).send({
-        status:  404,
-        message: resolve,
-        data:    null,
-      });
-    } else {
+  console.log(body);
+
+  if (body === undefined || body === null) {
+    res.status(400).send({
+      status:  400,
+      message: 'Body is required.',
+      data:    null,
+    });
+  } else if (body.index === undefined || body.index === null
+             || typeof body.index !== 'number' || body.index <= 0) {
+    res.status(400).send({
+      status:  400,
+      message: 'Index is required and must be a number greater than 0.',
+      data:    null,
+    });
+  } else if (body.word === undefined || body.word === null
+             || typeof body.word !== 'string' || body.word.length === 0) {
+    res.status(400).send({
+      status:  400,
+      message: 'Word is required and must be a string.',
+      data:    null,
+    });
+  } else if (body.phonetic_us !== undefined && body.phonetic_us !== null
+             && typeof body.phonetic_us !== 'string') {
+    res.status(400).send({
+      status:  400,
+      message: 'Phonetic US must be a string.',
+      data:    null,
+    });
+  } else if (body.phonetic_uk !== undefined && body.phonetic_uk !== null
+             && typeof body.phonetic_uk !== 'string') {
+    res.status(400).send({
+      status:  400,
+      message: 'Phonetic UK must be a string.',
+      data:    null,
+    });
+  } else if (body.translation === undefined || body.translation === null
+             || Array.isArray(body.translation) === false) {
+    res.status(400).send({
+      status:  400,
+      message: 'Translation is required and must be an array.',
+      data:    null,
+    });
+  } else if (Array.isArray(body.translation)) {
+    for (const trans of body.translation) {
+      if (trans.part_of_speech === undefined || trans.part_of_speech === null
+          || typeof trans.part_of_speech !== 'string') {
+        res.status(400).send({
+          status:  400,
+          message: 'Translation\'s part of speech is required and must be a string.',
+          data:    null,
+        });
+      } else if (trans.definition === undefined || trans.definition === null
+                 || typeof trans.definition !== 'string') {
+        res.status(400).send({
+          status:  400,
+          message: 'Translation\'s definition is required and must be a string.',
+          data:    null,
+        });
+      }
+    }
+  } else {
+    wordService.createWord(glossaryName, body).then((resolve) => {
+      // console.log(resolve);
       res.status(200).send({
         status:  200,
         message: 'Word added to ' + glossaryName + '.',
         data:    resolve,
       });
-    }
-  }).catch((reject) => {
-    // console.log(reject);
-    if (reject.code === 11000) {
-      res.status(409).send({
-        status:  409,
-        message: 'Word or index already exists in ' + glossaryName + '.',
-        data:    null,
-      });
-    } else {
-      res.status(500).send({
-        status:  500,
-        message: 'Internal server error.',
-        data:    reject,
-      });
-    }
-  });
+    }).catch((reject) => {
+      // console.log(reject);
+      if (typeof reject === 'object') {
+        res.status(reject.status).send({
+          status:  reject.status,
+          message: reject.message,
+          data:    reject.data,
+        });
+      } else {
+        res.status(500).send({
+          status:  500,
+          message: 'Internal server error.',
+          data:    null,
+        });
+      }
+    });
+  }
 };
 
 const updateWord = (req, res) => {
@@ -144,42 +194,52 @@ const updateWord = (req, res) => {
       message: 'Phonetic UK must be a string.',
       data:    null,
     });
-  } else if (body.transaction !== undefined && body.transaction !== null
-             && Array.isArray(body.transaction) === true) {
+  } else if (body.translation !== undefined && body.translation !== null
+             && Array.isArray(body.translation) === false) {
     res.status(400).send({
       status:  400,
-      message: 'Transaction must be an array.',
+      message: 'Translation must be an array.',
       data:    null,
     });
+  } else if (Array.isArray(body.translation)) {
+    for (const trans of body.translation) {
+      if (trans.part_of_speech !== undefined && trans.part_of_speech !== null
+          && typeof trans.part_of_speech !== 'string') {
+        res.status(400).send({
+          status:  400,
+          message: 'Translation\'s part of speech must be a string.',
+          data:    null,
+        });
+      } else if (trans.definition !== undefined && trans.definition !== null
+                 && typeof trans.definition !== 'string') {
+        res.status(400).send({
+          status:  400,
+          message: 'Translation\'s definition must be a string.',
+          data:    null,
+        });
+      }
+    }
   } else {
     wordService.updateWord(glossaryName, wordId, body).then((resolve) => {
       // console.log(resolve);
-      if (typeof resolve === 'string') {
-        res.status(404).send({
-          status:  404,
-          message: resolve,
-          data:    null,
-        });
-      } else {
-        res.status(200).send({
-          status:  200,
-          message: 'Word updated in ' + glossaryName + '.',
-          data:    resolve,
-        });
-      }
+      res.status(200).send({
+        status:  200,
+        message: 'Word updated in ' + glossaryName + '.',
+        data:    resolve,
+      });
     }).catch((reject) => {
       // console.log(reject);
-      if (reject.code === 11000) {
-        res.status(409).send({
-          status:  409,
-          message: 'Word or index already exists in ' + glossaryName + '.',
-          data:    null,
+      if (typeof reject === 'object') {
+        res.status(reject.status).send({
+          status:  reject.status,
+          message: reject.message,
+          data:    reject.data,
         });
       } else {
         res.status(500).send({
           status:  500,
           message: 'Internal server error.',
-          data:    reject,
+          data:    null,
         });
       }
     });
@@ -199,26 +259,26 @@ const deleteWord = (req, res) => {
   } else {
     wordService.deleteWord(glossaryName, wordId).then((resolve) => {
       // console.log(resolve);
-      if (typeof resolve === 'string') {
-        res.status(404).send({
-          status:  404,
-          message: resolve,
-          data:    null,
-        });
-      } else {
-        res.status(200).send({
-          status:  200,
-          message: 'Word deleted from ' + glossaryName + '.',
-          data:    resolve,
-        });
-      }
+      res.status(200).send({
+        status:  200,
+        message: 'Word deleted from ' + glossaryName + '.',
+        data:    resolve,
+      });
     }).catch((reject) => {
       // console.log(reject);
-      res.status(500).send({
-        status:  500,
-        message: 'Internal server error.',
-        data:    reject,
-      });
+      if (typeof reject === 'object') {
+        res.status(reject.status).send({
+          status:  reject.status,
+          message: reject.message,
+          data:    reject.data,
+        });
+      } else {
+        res.status(500).send({
+          status:  500,
+          message: 'Internal server error.',
+          data:    null,
+        });
+      }
     });
   }
 };

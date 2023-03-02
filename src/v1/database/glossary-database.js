@@ -15,7 +15,7 @@ const glossaryModel = require('../models/glossary');
 
 const getGlossaries = () => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.find({}, {}, {}).exec().then((glossaries) => {
+    glossaryModel.find({}, {}, {}).exec().then((glossaries) => {
       resolve(glossaries);
     }).catch((err) => {
       reject(err);
@@ -25,7 +25,7 @@ const getGlossaries = () => {
 
 const getGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.findOne({
+    glossaryModel.findOne({
       name: glossaryName,
     }, {}, {}).exec().then((glossary) => {
       resolve(glossary);
@@ -42,7 +42,7 @@ const createGlossary = (glossaryName, glossaryDescription) => {
       description: glossaryDescription,
       vocabulary:  [],
     });
-    return glossaryModel.create([glossary], {}).then((glossaries) => {
+    glossaryModel.create([glossary], {}).then((glossaries) => {
       resolve(glossaries);
     }).catch((err) => {
       reject(err);
@@ -52,7 +52,7 @@ const createGlossary = (glossaryName, glossaryDescription) => {
 
 const updateGlossary = (glossaryName, body) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.updateOne({
+    glossaryModel.updateOne({
       name: glossaryName,
     }, {
       $set: {
@@ -69,7 +69,7 @@ const updateGlossary = (glossaryName, body) => {
 
 const deleteGlossary = (glossaryName) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.deleteOne({
+    glossaryModel.deleteOne({
       name: glossaryName,
     }, {}).exec().then((res) => {
       resolve(res);
@@ -81,7 +81,7 @@ const deleteGlossary = (glossaryName) => {
 
 const addWordId = (glossaryName, wordId) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.updateOne({
+    glossaryModel.updateOne({
       name: glossaryName,
     }, {
       $push: {
@@ -115,7 +115,7 @@ const addWordIds = (glossaryName, wordIds) => {
 
 const deleteWordId = (glossaryName, wordId) => {
   return new Promise((resolve, reject) => {
-    return glossaryModel.updateOne({
+    glossaryModel.updateOne({
       name: glossaryName,
     }, {
       $pull: {

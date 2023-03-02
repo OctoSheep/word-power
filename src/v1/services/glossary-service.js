@@ -15,87 +15,123 @@ const Word          = require('../database/word-database');
 const githubService = require('./github-service');
 
 const getGlossaries = () => {
-  return Glossary.getGlossaries().then((glossaries) => {
-    if (!glossaries) {
-      return Promise.resolve('No glossaries found.');
-    }
+  return new Promise((resolve, reject) => {
+    Glossary.getGlossaries().then((glossaries) => {
+      if (!glossaries) {
+        reject({
+          status:  404,
+          message: 'No glossaries found.',
+          data:    null,
+        });
+      } else {
+        resolve(glossaries);
+      }
+    });
   });
 };
 
 const getGlossary = (glossaryName) => {
-  return Glossary.getGlossary(glossaryName).then((glossary) => {
-    if (!glossary) {
-      return Promise.resolve('Glossary ' + glossaryName + ' not found.');
-    }
+  return new Promise((resolve, reject) => {
+    Glossary.getGlossary(glossaryName).then((glossary) => {
+      if (!glossary) {
+        reject({
+          status:  404,
+          message: 'Glossary ' + glossaryName + ' not found.',
+          data:    null,
+        });
+      } else {
+        resolve(glossary);
+      }
+    });
   });
 };
 
 const createGlossary = (glossaryName, glossaryDescription, url) => {
-  return Glossary.getGlossary(glossaryName).then((glossary) => {
-    if (glossary) {
-      return Promise.resolve('Glossary ' + glossaryName + ' already exists.');
-    }
-    if (!url) {
-      return Glossary.createGlossary(glossaryName, glossaryDescription).
-                      then((glossaries) => {
-                        return glossaries[0];
-                      });
-    }
-    return githubService.getJson(url).then((words) => {
-      return Glossary.createGlossary(glossaryName, glossaryDescription).
-                      then(() => {
-                        return Word.createWords(glossaryName, words).
-                                    then((ids) => {
-                                      return Glossary.addWordIds(glossaryName,
-                                          ids).then(() => {
-                                        return Glossary.getGlossary(
-                                            glossaryName).
-                                                        then((glossary) => {
-                                                          return glossary;
-                                                        });
-                                      });
-                                    });
-                      });
+  return new Promise((resolve, reject) => {
+    Glossary.getGlossary(glossaryName).then((glossary) => {
+      if (glossary) {
+        reject({
+          status:  409,
+          message: 'Glossary ' + glossaryName + ' already exists.',
+          data:    null,
+        });
+      } else if (!url) {
+        Glossary.createGlossary(glossaryName, glossaryDescription).
+                 then((glossaries) => {
+                   resolve(glossaries[0]);
+                 });
+      } else {
+        githubService.getJson(url).then((words) => {
+          Glossary.createGlossary(glossaryName, glossaryDescription).
+                   then(() => {
+                     Word.createWords(glossaryName, words).then((ids) => {
+                       Glossary.addWordIds(glossaryName, ids).then(() => {
+                         Glossary.getGlossary(glossaryName).then((glossary) => {
+                           resolve(glossary);
+                         });
+                       });
+                     });
+                   });
+        });
+      }
     });
   });
 };
 
 const updateGlossary = (glossaryName, body) => {
-  return Glossary.getGlossary(glossaryName).then((oldGlossary) => {
-    if (!oldGlossary) {
-      return Promise.resolve('Old glossary ' + glossaryName + ' not found.');
-    }
-    if (body.name !== undefined && body.name !== null) {
-      return Glossary.getGlossary(body.name).then((newGlossary) => {
-        if (newGlossary) {
-          return Promise.resolve(
-              'New glossary ' + body.name + ' already exists.');
-        }
-        return Word.updateGlossary(glossaryName, body.name).then(() => {
-          return Glossary.updateGlossary(glossaryName, body).then(() => {
-            return Glossary.getGlossary(body.name).then((glossary) => {
-              return glossary;
+  return new Promise((resolve, reject) => {
+    Glossary.getGlossary(glossaryName).then((oldGlossary) => {
+      if (!oldGlossary) {
+        reject({
+          status:  404,
+          message: 'Old glossary ' + glossaryName + ' not found.',
+          data:    null,
+        });
+      } else if (body.name !== undefined && body.name !== null) {
+        Glossary.getGlossary(body.name).then((newGlossary) => {
+          if (newGlossary) {
+            reject({
+              status:  409,
+              message: 'New glossary ' + body.name + ' already exists.',
+              data:    null,
             });
+          } else {
+            Word.updateGlossary(glossaryName, body.name).then(() => {
+              Glossary.updateGlossary(glossaryName, body).then(() => {
+                Glossary.getGlossary(body.name).then((glossary) => {
+                  resolve(glossary);
+                });
+              });
+            });
+          }
+        });
+      } else {
+        Glossary.updateGlossary(glossaryName, body).then(() => {
+          Glossary.getGlossary(glossaryName).then((glossary) => {
+            resolve(glossary);
           });
         });
-      });
-    } else {
-      return Glossary.updateGlossary(glossaryName, body).then((res) => {
-        return res;
-      });
-    }
+      }
+    });
   });
 };
 
 const deleteGlossary = (glossaryName) => {
-  return Glossary.getGlossary(glossaryName).then((glossary) => {
-    if (!glossary) {
-      return Promise.resolve('Glossary ' + glossaryName + ' not found.');
-    }
-    return Word.deleteGlossary(glossaryName).then(() => {
-      return Glossary.deleteGlossary(glossaryName).then(() => {
-        return glossary;
-      });
+  return new Promise((resolve, reject) => {
+    Glossary.getGlossary(glossaryName).then((glossary) => {
+      if (!glossary) {
+        reject({
+          status:  404,
+          message: 'Glossary ' + glossaryName + ' not found.',
+          data:    null,
+        });
+      } else {
+        Word.deleteGlossary(glossaryName).then(() => {
+          Glossary.deleteGlossary(glossaryName).then(() => {
+            resolve(glossary);
+          });
+        });
+      }
     });
   });
 };

@@ -15,32 +15,26 @@ const glossaryService = require('../services/glossary-service');
 const getGlossaries = (req, res) => {
   glossaryService.getGlossaries().then((resolve) => {
     // console.log(resolve);
-    if (typeof resolve === 'string') {
-      res.status(404).send({
-        status:  404,
-        message: resolve,
-        data:    null,
-      });
-    } else if (!resolve || resolve.length === 0) {
-      res.status(404).send({
-        status:  404,
-        message: 'No glossaries found.',
-        data:    null,
-      });
-    } else {
-      res.status(200).send({
-        status:  200,
-        message: 'Get all glossaries.',
-        data:    resolve,
-      });
-    }
+    res.status(200).send({
+      status:  200,
+      message: 'Get all glossaries.',
+      data:    resolve,
+    });
   }).catch((reject) => {
     // console.log(reject);
-    res.status(500).send({
-      status:  500,
-      message: 'Internal server error.',
-      data:    reject,
-    });
+    if (typeof reject === 'object') {
+      res.status(reject.status).send({
+        status:  reject.status,
+        message: reject.message,
+        data:    reject.data,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    null,
+      });
+    }
   });
 };
 
@@ -49,26 +43,26 @@ const getGlossary = (req, res) => {
 
   glossaryService.getGlossary(glossaryName).then((resolve) => {
     // console.log(resolve);
-    if (typeof resolve === 'string') {
-      res.status(404).send({
-        status:  404,
-        message: resolve,
-        data:    null,
-      });
-    } else {
-      res.status(200).send({
-        status:  200,
-        message: 'Get an existing glossary.',
-        data:    resolve,
-      });
-    }
+    res.status(200).send({
+      status:  200,
+      message: 'Get an existing glossary.',
+      data:    resolve,
+    });
   }).catch((reject) => {
     // console.log(reject);
-    res.status(500).send({
-      status:  500,
-      message: 'Internal server error.',
-      data:    reject,
-    });
+    if (typeof reject === 'object') {
+      res.status(reject.status).send({
+        status:  reject.status,
+        message: reject.message,
+        data:    reject.data,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    null,
+      });
+    }
   });
 };
 
@@ -82,14 +76,14 @@ const createGlossary = (req, res) => {
       data:    null,
     });
   } else if (body.name === undefined || body.name === null
-             || body.name === '') {
+             || body.name.length === 0) {
     res.status(400).send({
       status:  400,
       message: 'Name is required.',
       data:    null,
     });
   } else if (body.description === undefined || body.description === null
-             || body.description === '') {
+             || body.description.length === 0) {
     res.status(400).send({
       status:  400,
       message: 'Description is required.',
@@ -112,33 +106,25 @@ const createGlossary = (req, res) => {
     glossaryService.createGlossary(body.name, body.description, url).
                     then((resolve) => {
                       // console.log(resolve);
-                      if (resolve === null) {
-                        res.status(409).send({
-                          status:  409,
-                          message: 'Glossary already exists.',
-                          data:    null,
-                        });
-                      } else {
-                        res.status(201).send({
-                          status:  201,
-                          message: 'Create a new glossary.',
-                          data:    resolve,
-                        });
-                      }
+                      res.status(201).send({
+                        status:  201,
+                        message: 'Create a new glossary.',
+                        data:    resolve,
+                      });
                     }).
                     catch((reject) => {
                       // console.log(reject);
-                      if (reject.code === 11000) {
-                        res.status(409).send({
-                          status:  409,
-                          message: 'Glossary ' + body.name + ' already exists.',
-                          data:    null,
+                      if (typeof reject === 'object') {
+                        res.status(reject.status).send({
+                          status:  reject.status,
+                          message: reject.message,
+                          data:    reject.data,
                         });
                       } else {
                         res.status(500).send({
                           status:  500,
                           message: 'Internal server error.',
-                          data:    reject,
+                          data:    null,
                         });
                       }
                     });
@@ -163,7 +149,7 @@ const updateGlossary = (req, res) => {
       data:    null,
     });
   } else if (body.name !== undefined && body.name !== null
-             && body.name === '') {
+             && body.name.length === 0) {
     res.status(400).send({
       status:  400,
       message: 'Name is required.',
@@ -177,7 +163,7 @@ const updateGlossary = (req, res) => {
       data:    null,
     });
   } else if (body.description !== undefined && body.description !== null
-             && body.description === '') {
+             && body.description.length === 0) {
     res.status(400).send({
       status:  400,
       message: 'Description is required.',
@@ -186,32 +172,24 @@ const updateGlossary = (req, res) => {
   } else {
     glossaryService.updateGlossary(glossaryName, body).then((resolve) => {
       // console.log(resolve);
-      if (typeof resolve === 'string') {
-        res.status(404).send({
-          status:  404,
-          message: resolve,
-          data:    null,
-        });
-      } else {
-        res.status(200).send({
-          status:  200,
-          message: 'Update an existing glossary.',
-          data:    resolve,
-        });
-      }
+      res.status(200).send({
+        status:  200,
+        message: 'Update an existing glossary.',
+        data:    resolve,
+      });
     }).catch((reject) => {
       // console.log(reject);
-      if (reject.code === 11000) {
-        res.status(409).send({
-          status:  409,
-          message: 'Glossary ' + body.name + ' already exists.',
-          data:    null,
+      if (typeof reject === 'object') {
+        res.status(reject.status).send({
+          status:  reject.status,
+          message: reject.message,
+          data:    reject.data,
         });
       } else {
         res.status(500).send({
           status:  500,
           message: 'Internal server error.',
-          data:    reject,
+          data:    null,
         });
       }
     });
@@ -223,26 +201,26 @@ const deleteGlossary = (req, res) => {
 
   glossaryService.deleteGlossary(glossaryName).then((resolve) => {
     // console.log(resolve);
-    if (typeof resolve === 'string') {
-      res.status(404).send({
-        status:  404,
-        message: resolve,
-        data:    null,
-      });
-    } else {
-      res.status(200).send({
-        status:  200,
-        message: 'Delete an existing glossary.',
-        data:    resolve,
-      });
-    }
+    res.status(200).send({
+      status:  200,
+      message: 'Delete an existing glossary.',
+      data:    resolve,
+    });
   }).catch((reject) => {
     // console.log(reject);
-    res.status(500).send({
-      status:  500,
-      message: 'Internal server error.',
-      data:    reject,
-    });
+    if (typeof reject === 'object') {
+      res.status(reject.status).send({
+        status:  reject.status,
+        message: reject.message,
+        data:    reject.data,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    null,
+      });
+    }
   });
 };
 
