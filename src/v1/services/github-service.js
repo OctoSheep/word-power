@@ -10,7 +10,10 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const getJson = (url) => {
+const getJson = (
+  url,
+  authorization,
+) => {
   return new Promise((
     resolve,
     reject,
@@ -19,13 +22,21 @@ const getJson = (url) => {
       url,
       {
         headers: {
-          Authorization: 'Bearer ' + process.env.GITHUB_TOKEN,
+          Authorization: authorization,
         },
       },
     ).then((words) => {
-        resolve(words.json());
+        if (words.status !== 200) {
+          reject(words);
+        } else {
+          resolve(words);
+        }
       },
     ).catch((err) => {
+      console.log(
+        'err',
+        err,
+      );
       reject(err);
     });
   });

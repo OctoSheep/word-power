@@ -81,7 +81,8 @@ const createGlossary = (
   req,
   res,
 ) => {
-  const body = req.body;
+  const body          = req.body;
+  const authorization = req.headers.authorization;
 
   if (body === undefined || body === null) {
     res.status(400).send({
@@ -109,7 +110,7 @@ const createGlossary = (
       try {
         url = new URL(url);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
         res.status(400).send({
           status:  400,
           message: 'URL is invalid.',
@@ -121,6 +122,7 @@ const createGlossary = (
       body.name,
       body.description,
       url,
+      authorization,
     ).then((resolve) => {
         // console.log(resolve);
         res.status(201).send({
@@ -202,7 +204,7 @@ const updateGlossary = (
         });
       },
     ).catch((reject) => {
-      // console.log(reject);
+      console.log(reject);
       if (typeof reject === 'object') {
         res.status(reject.status).send({
           status:  reject.status,

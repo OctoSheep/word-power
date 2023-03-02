@@ -60,6 +60,7 @@ const createGlossary = (
   glossaryName,
   glossaryDescription,
   url,
+  authorization,
 ) => {
   return new Promise((
     resolve,
@@ -84,6 +85,7 @@ const createGlossary = (
       } else {
         githubService.getJson(
           url,
+          authorization,
         ).then((words) => {
           Glossary.createGlossary(
             glossaryName,
@@ -91,7 +93,7 @@ const createGlossary = (
           ).then(() => {
             Word.createWords(
               glossaryName,
-              words,
+              words.json(),
             ).then((ids) => {
               Glossary.addWordIds(
                 glossaryName,
@@ -104,6 +106,13 @@ const createGlossary = (
                 });
               });
             });
+          });
+        }).catch((error) => {
+          // console.log(error);
+          reject({
+            status:  400,
+            message: 'Error while fetching words from GitHub.',
+            data:    error,
           });
         });
       }
