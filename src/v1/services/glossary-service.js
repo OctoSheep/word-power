@@ -20,7 +20,7 @@ const getGlossaries = () => {
     reject,
   ) => {
     Glossary.getGlossaries().then((glossaries) => {
-      if (!glossaries) {
+      if (!glossaries || glossaries.length === 0) {
         reject({
           status:  404,
           message: 'No glossaries found.',
@@ -93,7 +93,7 @@ const createGlossary = (
           ).then(() => {
             Word.createWords(
               glossaryName,
-              words.json(),
+              words,
             ).then((ids) => {
               Glossary.addWordIds(
                 glossaryName,

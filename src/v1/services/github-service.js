@@ -26,19 +26,13 @@ const getJson = (
         },
       },
     ).then((words) => {
-        if (words.status !== 200) {
-          reject(words);
-        } else {
-          resolve(words);
-        }
+        words.json().then((json) => {
+          resolve(json);
+        }).catch((error) => {
+          reject(error);
+        });
       },
-    ).catch((err) => {
-      console.log(
-        'err',
-        err,
-      );
-      reject(err);
-    });
+    );
   });
 };
 

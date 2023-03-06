@@ -165,6 +165,8 @@ const createWords = (
     reject,
   ) => {
     let wordsToCreate = [];
+    // console.log(words);
+    // console.log(typeof words);
     for (const word of words) {
       const newWord = new wordModel({
         glossary:    glossaryName,
