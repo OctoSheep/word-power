@@ -15,7 +15,7 @@ const {
         connection,
       } = require('mongoose');
 
-connect(process.env.MONGO_URI).catch(err => {
+connect(process.env.MONGO_URI_V1).catch(err => {
   console.log(err);
 });
 

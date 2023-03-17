@@ -20,7 +20,9 @@ const getGlossaries = () => {
   ) => {
     glossaryModel.find(
       {},
-      {},
+      {
+        'vocabularies': 0,
+      },
       {},
     ).exec(
     ).then((glossaries) => {
