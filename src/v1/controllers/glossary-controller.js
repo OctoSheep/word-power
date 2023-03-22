@@ -104,50 +104,49 @@ const createGlossary = (
       message: 'Description is required.',
       data:    null,
     });
-  } else {
-    let url = body.url;
-    if (url !== undefined && url !== null && url !== '') {
-      try {
-        url = new URL(url);
-      } catch (e) {
-        // console.log(e);
-        res.status(400).send({
-          status:  400,
-          message: 'URL is invalid.',
-          data:    null,
-        });
-      }
-    }
-    glossaryService.createGlossary(
-      body.name,
-      body.description,
-      url,
-      authorization,
-    ).then((resolve) => {
-        // console.log(resolve);
-        res.status(201).send({
-          status:  201,
-          message: 'Create a new glossary.',
-          data:    resolve,
-        });
-      },
-    ).catch((reject) => {
-      // console.log(reject);
-      if (typeof reject === 'object') {
-        res.status(reject.status).send({
-          status:  reject.status,
-          message: reject.message,
-          data:    reject.data,
-        });
-      } else {
-        res.status(500).send({
-          status:  500,
-          message: 'Internal server error.',
-          data:    null,
-        });
-      }
-    });
   }
+  let url = body.url;
+  if (url !== undefined && url !== null && url !== '') {
+    try {
+      url = new URL(url);
+    } catch (e) {
+      // console.log(e);
+      res.status(400).send({
+        status:  400,
+        message: 'URL is invalid.',
+        data:    null,
+      });
+    }
+  }
+  glossaryService.createGlossary(
+    body.name,
+    body.description,
+    url,
+    authorization,
+  ).then((resolve) => {
+      // console.log(resolve);
+      res.status(201).send({
+        status:  201,
+        message: 'Create a new glossary.',
+        data:    resolve,
+      });
+    },
+  ).catch((reject) => {
+    // console.log(reject);
+    if (typeof reject === 'object') {
+      res.status(reject.status).send({
+        status:  reject.status,
+        message: reject.message,
+        data:    reject.data,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    null,
+      });
+    }
+  });
 };
 
 const updateGlossary = (
@@ -191,35 +190,34 @@ const updateGlossary = (
       message: 'Description is required.',
       data:    null,
     });
-  } else {
-    glossaryService.updateGlossary(
-      glossaryName,
-      body,
-    ).then((resolve) => {
-        // console.log(resolve);
-        res.status(200).send({
-          status:  200,
-          message: 'Update an existing glossary.',
-          data:    resolve,
-        });
-      },
-    ).catch((reject) => {
-      console.log(reject);
-      if (typeof reject === 'object') {
-        res.status(reject.status).send({
-          status:  reject.status,
-          message: reject.message,
-          data:    reject.data,
-        });
-      } else {
-        res.status(500).send({
-          status:  500,
-          message: 'Internal server error.',
-          data:    null,
-        });
-      }
-    });
   }
+  glossaryService.updateGlossary(
+    glossaryName,
+    body,
+  ).then((resolve) => {
+      // console.log(resolve);
+      res.status(200).send({
+        status:  200,
+        message: 'Update an existing glossary.',
+        data:    resolve,
+      });
+    },
+  ).catch((reject) => {
+    // console.log(reject);
+    if (typeof reject === 'object') {
+      res.status(reject.status).send({
+        status:  reject.status,
+        message: reject.message,
+        data:    reject.data,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    null,
+      });
+    }
+  });
 };
 
 const deleteGlossary = (

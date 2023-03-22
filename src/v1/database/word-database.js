@@ -128,8 +128,7 @@ const getWordByNameOrIndex = (
 };
 
 const createWord = (
-  glossaryName
-  ,
+  glossaryName,
   body,
 ) => {
   return new Promise((
@@ -241,7 +240,6 @@ const deleteWord = (
       },
       {},
     ).exec().then((res) => {
-        console.log(res);
         resolve(res);
       },
     ).catch((err) => {

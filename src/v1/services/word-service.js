@@ -72,7 +72,7 @@ const createWord = (
       } else {
         Word.getWordByNameOrIndex(
           glossaryName,
-          body.name,
+          body.word,
           body.index,
         ).then((word) => {
           if (word) {

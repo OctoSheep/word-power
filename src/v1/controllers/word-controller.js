@@ -64,8 +64,6 @@ const createWord = (
   const glossaryName = req.params['glossaryName'];
   const body         = req.body;
 
-  console.log(body);
-
   if (body === undefined || body === null) {
     res.status(400).send({
       status:  400,
@@ -125,34 +123,33 @@ const createWord = (
         });
       }
     }
-  } else {
-    wordService.createWord(
-      glossaryName,
-      body,
-    ).then((resolve) => {
-      // console.log(resolve);
-      res.status(200).send({
-        status:  200,
-        message: 'Word added to ' + glossaryName + '.',
-        data:    resolve,
-      });
-    }).catch((reject) => {
-      // console.log(reject);
-      if (typeof reject === 'object') {
-        res.status(reject.status).send({
-          status:  reject.status,
-          message: reject.message,
-          data:    reject.data,
-        });
-      } else {
-        res.status(500).send({
-          status:  500,
-          message: 'Internal server error.',
-          data:    null,
-        });
-      }
-    });
   }
+  wordService.createWord(
+    glossaryName,
+    body,
+  ).then((resolve) => {
+    // console.log(resolve);
+    res.status(200).send({
+      status:  200,
+      message: 'Word added to ' + glossaryName + '.',
+      data:    resolve,
+    });
+  }).catch((reject) => {
+    // console.log(reject);
+    if (typeof reject === 'object') {
+      res.status(reject.status).send({
+        status:  reject.status,
+        message: reject.message,
+        data:    reject.data,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    null,
+      });
+    }
+  });
 };
 
 const updateWord = (
@@ -235,35 +232,34 @@ const updateWord = (
         });
       }
     }
-  } else {
-    wordService.updateWord(
-      glossaryName,
-      wordId,
-      body,
-    ).then((resolve) => {
-      // console.log(resolve);
-      res.status(200).send({
-        status:  200,
-        message: 'Word updated in ' + glossaryName + '.',
-        data:    resolve,
-      });
-    }).catch((reject) => {
-      // console.log(reject);
-      if (typeof reject === 'object') {
-        res.status(reject.status).send({
-          status:  reject.status,
-          message: reject.message,
-          data:    reject.data,
-        });
-      } else {
-        res.status(500).send({
-          status:  500,
-          message: 'Internal server error.',
-          data:    null,
-        });
-      }
-    });
   }
+  wordService.updateWord(
+    glossaryName,
+    wordId,
+    body,
+  ).then((resolve) => {
+    // console.log(resolve);
+    res.status(200).send({
+      status:  200,
+      message: 'Word updated in ' + glossaryName + '.',
+      data:    resolve,
+    });
+  }).catch((reject) => {
+    // console.log(reject);
+    if (typeof reject === 'object') {
+      res.status(reject.status).send({
+        status:  reject.status,
+        message: reject.message,
+        data:    reject.data,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    null,
+      });
+    }
+  });
 };
 
 const deleteWord = (
