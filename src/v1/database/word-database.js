@@ -40,7 +40,10 @@ const getWords = (
     } else if (word) {
       wordModel.find(
         {
-          'word':     word,
+          'word':     {
+            $regex:   word,
+            $options: 'i',
+          },
           'glossary': glossary.name,
         },
         {},
