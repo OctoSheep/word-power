@@ -12,6 +12,7 @@
 
 const dotenv  = require('dotenv');
 const express = require('express');
+const cors    = require('cors');
 
 dotenv.config();
 
@@ -20,6 +21,12 @@ const v1WordRouter     = require('./v1/routes/word-route');
 
 const app  = express();
 const port = process.env.PORT || 3000;
+
+const corsOptions = {
+  origin:               process.env.CORS_ORIGIN,
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 app.use((
   req,
