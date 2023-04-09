@@ -141,7 +141,7 @@ const updateGlossary = (
         Glossary.getGlossary(
           body.name,
         ).then((newGlossary) => {
-          if (newGlossary) {
+          if (newGlossary && newGlossary.name !== glossaryName) {
             reject({
               status:  409,
               message: 'New glossary ' + body.name + ' already exists.',
