@@ -146,7 +146,7 @@ const updateWord = (
                   body.word,
                   body.index,
                 ).then((word) => {
-                  if (word) {
+                  if (word && word._id.ObjectId !== oldWord._id.ObjectId) {
                     reject({
                       status:  409,
                       message: 'Word or index already exists in '
@@ -211,7 +211,7 @@ const updateWord = (
               body.word,
               body.index,
             ).then((word) => {
-              if (word) {
+              if (word && word._id.ObjectId !== oldWord._id.ObjectId) {
                 reject({
                   status:  409,
                   message: 'Word or index already exists in ' + glossaryName
