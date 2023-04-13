@@ -29,6 +29,17 @@ const userSchema = mongoose.Schema({
   globalData: {
     type: Object,
   },
+  glossaries: [
+    {
+      glossary: {
+        type: String,
+        ref:  'Glossary',
+      },
+      index:    {
+        type: Number,
+      },
+    },
+  ],
 });
 
 const userModel = mongoose.model(

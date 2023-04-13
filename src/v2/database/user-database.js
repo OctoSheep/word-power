@@ -71,6 +71,7 @@ const createUser = (
       name:       openid,
       admin:      admin,
       globalData: null,
+      glossary:   [],
     });
     userModel.create(
       [user],
@@ -86,8 +87,64 @@ const createUser = (
   });
 };
 
+const updateUser = (
+  openid,
+  name,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    userModel.updateOne(
+      {
+        openid: openid,
+      },
+      {
+        $set: {
+          name: name,
+        },
+      },
+      {},
+    ).exec(
+    ).then((user) => {
+        resolve(user);
+      },
+    ).catch(
+      (err) => {
+        reject(err);
+      },
+    );
+  });
+};
+
+const deleteUser = (
+  openid,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    userModel.deleteOne(
+      {
+        openid: openid,
+      },
+      {},
+    ).exec(
+    ).then((user) => {
+        resolve(user);
+      },
+    ).catch(
+      (err) => {
+        reject(err);
+      },
+    );
+  });
+};
+
 module.exports = {
   getUser,
   getUsersCount,
   createUser,
+  updateUser,
+  deleteUser,
 };
