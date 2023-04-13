@@ -10,20 +10,30 @@
  * You should have received a copy of the GNU General Public License along with Word Power. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const userServices = require('../services/user-service');
+const mongoose = require('mongoose');
 
-const getUser = (
-  req,
-  res,
-) => {
-  const code = req.params['code'];
-  userServices.getUser(code).then((user) => {
-    res.status(200).json(user);
-  }).catch((err) => {
-    res.status(500).json(err);
-  });
-};
+const userSchema = mongoose.Schema({
+  openid:     {
+    type:     String,
+    required: true,
+    unique:   true,
+  },
+  name:       {
+    type:     String,
+    required: true,
+  },
+  admin:      {
+    type:     Boolean,
+    required: true,
+  },
+  globalData: {
+    type: Object,
+  },
+});
 
-module.exports = {
-  getUser,
-};
+const userModel = mongoose.model(
+  'User',
+  userSchema,
+);
+
+module.exports = userModel;
