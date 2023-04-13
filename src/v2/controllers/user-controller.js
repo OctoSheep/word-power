@@ -24,6 +24,103 @@ const getUser = (
   });
 };
 
+const updateUser = (
+  req,
+  res,
+) => {
+  const code = req.params['openid'];
+  const body = req.body;
+
+  if (body === undefined || body === null) {
+    res.status(400).send({
+      status:  400,
+      message: 'Body is required.',
+      data:    null,
+    });
+  } else if (body.name === undefined || body.name === null) {
+    res.status(400).send({
+      status:  400,
+      message: 'Name is required.',
+      data:    null,
+    });
+  } else if (typeof body.name !== 'string') {
+    res.status(400).send({
+      status:  400,
+      message: 'Name must be a string.',
+      data:    null,
+    });
+  } else if (body.name.length === 0) {
+    res.status(400).send({
+      status:  400,
+      message: 'Name is required.',
+      data:    null,
+    });
+  }
+  userServices.updateUser(
+    code,
+    body.name,
+  ).then((resolve) => {
+      // console.log(resolve);
+      res.status(200).send({
+        status:  200,
+        message: 'User updated successfully.',
+        data:    resolve,
+      });
+    },
+  ).catch((reject) => {
+    // console.log(reject);
+    if (typeof reject === 'object') {
+      res.status(reject.status).send({
+        status:  reject.status,
+        message: reject.message,
+        data:    reject.data,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    null,
+      });
+    }
+  });
+};
+
+const deleteUser = (
+  req,
+  res,
+) => {
+  const openid = req.params['openid'];
+
+  userServices.deleteUser(
+    openid,
+  ).then((resolve) => {
+      // console.log(resolve);
+      res.status(200).send({
+        status:  200,
+        message: 'User deleted successfully.',
+        data:    resolve,
+      });
+    },
+  ).catch((reject) => {
+    // console.log(reject);
+    if (typeof reject === 'object') {
+      res.status(reject.status).send({
+        status:  reject.status,
+        message: reject.message,
+        data:    reject.data,
+      });
+    } else {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    null,
+      });
+    }
+  });
+};
+
 module.exports = {
   getUser,
+  updateUser,
+  deleteUser,
 };

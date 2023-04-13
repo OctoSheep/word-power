@@ -72,7 +72,75 @@ const getUser = (code) => {
   });
 };
 
+const updateUser = (
+  openid,
+  name,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    User.getUser(
+      openid,
+    ).then((oldUser) => {
+      if (!oldUser) {
+        reject({
+          status:  404,
+          message: 'User with openid ' + openid + ' not found',
+          data:    null,
+        });
+      } else {
+        User.updateUser(
+          openid,
+          name,
+        ).then(() => {
+          User.getUser(
+            openid,
+          ).then((user) => {
+            resolve(user);
+          }).catch((error) => {
+            reject(error);
+          });
+        }).catch((error) => {
+          reject(error);
+        });
+      }
+    });
+  });
+};
+
+const deleteUser = (
+  openid,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    User.getUser(
+      openid,
+    ).then((user) => {
+      if (!user) {
+        reject({
+          status:  404,
+          message: 'User with openid ' + openid + ' not found',
+          data:    null,
+        });
+      } else {
+        User.deleteUser(
+          openid,
+        ).then(() => {
+          resolve(user);
+        }).catch((error) => {
+          reject(error);
+        });
+      }
+    });
+  });
+};
+
 module.exports = {
   code2session,
   getUser,
+  updateUser,
+  deleteUser,
 };

@@ -19,4 +19,14 @@ router.get(
   userController.getUser,
 );
 
+router.patch(
+  '/:openid',
+  userController.updateUser,
+);
+
+router.delete(
+  '/:openid',
+  userController.deleteUser,
+);
+
 module.exports = router;
