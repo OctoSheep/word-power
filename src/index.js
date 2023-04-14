@@ -19,6 +19,7 @@ dotenv.config();
 const v1GlossaryRouter = require('./v1/routes/glossary-route');
 const v1WordRouter     = require('./v1/routes/word-route');
 const v2UserRouter     = require('./v2/routes/user-route');
+const v2CardRouter     = require('./v2/routes/card-route');
 
 const app  = express();
 const port = process.env.PORT || 3000;
@@ -62,6 +63,10 @@ app.use(
 app.use(
   '/v2/users',
   v2UserRouter,
+);
+app.use(
+  '/v2/cards',
+  v2CardRouter,
 );
 
 app.listen(
