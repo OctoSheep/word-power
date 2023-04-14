@@ -20,24 +20,44 @@ const code2session = (code) => {
     fetch(
       `https://api.weixin.qq.com/sns/jscode2session?appid=${process.env.WX_APPID}&secret=${process.env.WX_SECRET}&js_code=${code}&grant_type=authorization_code`,
     ).then((res) => {
-      res.json().then((json) => {
-        resolve(json.openid);
-      }).catch((error) => {
-        reject(error);
-      });
-    }).catch((error) => {
+        res.json().then((json) => {
+            resolve(json.openid);
+          },
+        ).catch((error) => {
+          reject(error);
+        });
+      },
+    ).catch((error) => {
       reject(error);
     });
   });
 };
 
-const getUser = (code) => {
+const getUserByCode = (code) => {
   return new Promise((
     resolve,
     reject,
   ) => {
     code2session(code).then((openid) => {
-      User.getUser(openid).then((user) => {
+        getUserById(openid).then((user) => {
+            resolve(user);
+          },
+        ).catch((error) => {
+          reject(error);
+        });
+      },
+    ).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
+const getUserById = (openid) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    User.getUser(openid).then((user) => {
         if (user) {
           resolve(user);
         } else {
@@ -47,8 +67,9 @@ const getUser = (code) => {
                 openid,
                 true,
               ).then((user) => {
-                resolve(user);
-              }).catch((error) => {
+                  resolve(user);
+                },
+              ).catch((error) => {
                 reject(error);
               });
             } else {
@@ -56,17 +77,16 @@ const getUser = (code) => {
                 openid,
                 false,
               ).then((user) => {
-                resolve(user);
-              }).catch((error) => {
+                  resolve(user);
+                },
+              ).catch((error) => {
                 reject(error);
               });
             }
           });
         }
-      }).catch((error) => {
-        reject(error);
-      });
-    }).catch((error) => {
+      },
+    ).catch((error) => {
       reject(error);
     });
   });
@@ -94,14 +114,16 @@ const updateUser = (
           openid,
           name,
         ).then(() => {
-          User.getUser(
-            openid,
-          ).then((user) => {
-            resolve(user);
-          }).catch((error) => {
-            reject(error);
-          });
-        }).catch((error) => {
+            User.getUser(
+              openid,
+            ).then((user) => {
+                resolve(user);
+              },
+            ).catch((error) => {
+              reject(error);
+            });
+          },
+        ).catch((error) => {
           reject(error);
         });
       }
@@ -129,8 +151,9 @@ const deleteUser = (
         User.deleteUser(
           openid,
         ).then(() => {
-          resolve(user);
-        }).catch((error) => {
+            resolve(user);
+          },
+        ).catch((error) => {
           reject(error);
         });
       }
@@ -140,7 +163,8 @@ const deleteUser = (
 
 module.exports = {
   code2session,
-  getUser,
+  getUserByCode,
+  getUserById,
   updateUser,
   deleteUser,
 };

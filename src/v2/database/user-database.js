@@ -30,8 +30,7 @@ const getUser = (
     ).then((user) => {
         resolve(user);
       },
-    ).catch(
-      (err) => {
+    ).catch((err) => {
         reject(err);
       },
     );
@@ -79,8 +78,7 @@ const createUser = (
     ).then((users) => {
         resolve(users[0]);
       },
-    ).catch(
-      (err) => {
+    ).catch((err) => {
         reject(err);
       },
     );
@@ -109,8 +107,7 @@ const updateUser = (
     ).then((user) => {
         resolve(user);
       },
-    ).catch(
-      (err) => {
+    ).catch((err) => {
         reject(err);
       },
     );
@@ -133,8 +130,7 @@ const deleteUser = (
     ).then((user) => {
         resolve(user);
       },
-    ).catch(
-      (err) => {
+    ).catch((err) => {
         reject(err);
       },
     );

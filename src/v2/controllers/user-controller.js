@@ -16,12 +16,71 @@ const getUser = (
   req,
   res,
 ) => {
-  const code = req.params['code'];
-  userServices.getUser(code).then((user) => {
-    res.status(200).json(user);
-  }).catch((err) => {
-    res.status(500).json(err);
-  });
+  const codeOrId = req.params['codeOrId'];
+
+  if (codeOrId.length === 0) {
+    res.status(400).send({
+      status:  400,
+      message: 'Code is required.',
+      data:    null,
+    });
+  } else if (codeOrId.length === 28) {
+    userServices.getUserById(codeOrId).then((resolve) => {
+        // console.log(resolve);
+        res.status(200).send({
+          status:  200,
+          message: 'User found.',
+          data:    resolve,
+        });
+      },
+    ).catch((reject) => {
+      // console.log(reject);
+      if (typeof reject === 'object') {
+        res.status(reject.status).send({
+          status:  reject.status,
+          message: reject.message,
+          data:    reject.data,
+        });
+      } else {
+        res.status(500).send({
+          status:  500,
+          message: 'Internal server error.',
+          data:    null,
+        });
+      }
+    });
+  } else if (codeOrId.length === 32) {
+    userServices.getUserByCode(codeOrId).then((resolve) => {
+        // console.log(resolve);
+        res.status(200).send({
+          status:  200,
+          message: 'User found.',
+          data:    resolve,
+        });
+      },
+    ).catch((reject) => {
+      // console.log(reject);
+      if (typeof reject === 'object') {
+        res.status(reject.status).send({
+          status:  reject.status,
+          message: reject.message,
+          data:    reject.data,
+        });
+      } else {
+        res.status(500).send({
+          status:  500,
+          message: 'Internal server error.',
+          data:    null,
+        });
+      }
+    });
+  } else {
+    res.status(400).send({
+      status:  400,
+      message: 'Code is invalid.',
+      data:    null,
+    });
+  }
 };
 
 const updateUser = (
