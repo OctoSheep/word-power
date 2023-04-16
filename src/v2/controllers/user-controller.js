@@ -35,11 +35,17 @@ const getUser = (
       },
     ).catch((reject) => {
       // console.log(reject);
-      if (typeof reject === 'object') {
+      if (typeof reject === 'object' && reject.status !== undefined) {
         res.status(reject.status).send({
           status:  reject.status,
           message: reject.message,
           data:    reject.data,
+        });
+      } else if (typeof reject === 'object' && reject.status === undefined) {
+        res.status(500).send({
+          status:  500,
+          message: 'Internal server error.',
+          data:    reject,
         });
       } else {
         res.status(500).send({
@@ -60,11 +66,17 @@ const getUser = (
       },
     ).catch((reject) => {
       // console.log(reject);
-      if (typeof reject === 'object') {
+      if (typeof reject === 'object' && reject.status !== undefined) {
         res.status(reject.status).send({
           status:  reject.status,
           message: reject.message,
           data:    reject.data,
+        });
+      } else if (typeof reject === 'object' && reject.status === undefined) {
+        res.status(500).send({
+          status:  500,
+          message: 'Internal server error.',
+          data:    reject,
         });
       } else {
         res.status(500).send({
@@ -128,11 +140,17 @@ const updateUser = (
     },
   ).catch((reject) => {
     // console.log(reject);
-    if (typeof reject === 'object') {
+    if (typeof reject === 'object' && reject.status !== undefined) {
       res.status(reject.status).send({
         status:  reject.status,
         message: reject.message,
         data:    reject.data,
+      });
+    } else if (typeof reject === 'object' && reject.status === undefined) {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    reject,
       });
     } else {
       res.status(500).send({
@@ -162,11 +180,17 @@ const deleteUser = (
     },
   ).catch((reject) => {
     // console.log(reject);
-    if (typeof reject === 'object') {
+    if (typeof reject === 'object' && reject.status !== undefined) {
       res.status(reject.status).send({
         status:  reject.status,
         message: reject.message,
         data:    reject.data,
+      });
+    } else if (typeof reject === 'object' && reject.status === undefined) {
+      res.status(500).send({
+        status:  500,
+        message: 'Internal server error.',
+        data:    reject,
       });
     } else {
       res.status(500).send({
