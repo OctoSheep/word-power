@@ -71,6 +71,8 @@ const createUser = (
       admin:      admin,
       globalData: null,
       glossary:   [],
+      date:       new Date(),
+      todayCount: 0,
     });
     userModel.create(
       [user],
@@ -88,6 +90,10 @@ const createUser = (
 const updateUser = (
   openid,
   name,
+  globalData,
+  glossary,
+  date,
+  todayCount,
 ) => {
   return new Promise((
     resolve,
@@ -99,7 +105,11 @@ const updateUser = (
       },
       {
         $set: {
-          name: name,
+          name:       name,
+          globalData: globalData,
+          glossary:   glossary,
+          date:       date,
+          todayCount: todayCount,
         },
       },
       {},

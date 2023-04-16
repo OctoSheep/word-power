@@ -59,7 +59,32 @@ const getUserById = (openid) => {
   ) => {
     User.getUser(openid).then((user) => {
         if (user) {
-          resolve(user);
+          const date  = user.date;
+          const today = new Date();
+          if (date.toDateString() !== today.toDateString()) {
+            User.updateUser(
+              openid,
+              user.name,
+              user.globalData,
+              user.glossary,
+              today,
+              0,
+            ).then(() => {
+                User.getUser(
+                  openid,
+                ).then((user) => {
+                    resolve(user);
+                  },
+                ).catch((error) => {
+                  reject(error);
+                });
+              },
+            ).catch((error) => {
+              reject(error);
+            });
+          } else {
+            resolve(user);
+          }
         } else {
           User.getUsersCount().then((count) => {
             if (count <= 0) {
@@ -95,6 +120,10 @@ const getUserById = (openid) => {
 const updateUser = (
   openid,
   name,
+  globalData,
+  glossary,
+  date,
+  todayCount,
 ) => {
   return new Promise((
     resolve,
@@ -113,6 +142,10 @@ const updateUser = (
         User.updateUser(
           openid,
           name,
+          globalData,
+          glossary,
+          date,
+          todayCount,
         ).then(() => {
             User.getUser(
               openid,

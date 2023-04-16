@@ -40,6 +40,14 @@ const userSchema = mongoose.Schema({
       },
     },
   ],
+  date:       {
+    type:    Date,
+    default: Date.now,
+  },
+  todayCount: {
+    type:    Number,
+    default: 0,
+  },
 });
 
 const userModel = mongoose.model(
