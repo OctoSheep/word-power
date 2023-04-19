@@ -91,7 +91,7 @@ const updateUser = (
   openid,
   name,
   globalData,
-  glossary,
+  glossaries,
   date,
   todayCount,
 ) => {
@@ -107,7 +107,7 @@ const updateUser = (
         $set: {
           name:       name,
           globalData: globalData,
-          glossary:   glossary,
+          glossaries: glossaries,
           date:       date,
           todayCount: todayCount,
         },

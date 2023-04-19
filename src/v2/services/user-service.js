@@ -121,7 +121,7 @@ const updateUser = (
   openid,
   name,
   globalData,
-  glossary,
+  glossaries,
   date,
   todayCount,
 ) => {
@@ -143,7 +143,7 @@ const updateUser = (
           openid,
           name,
           globalData,
-          glossary,
+          glossaries,
           date,
           todayCount,
         ).then(() => {

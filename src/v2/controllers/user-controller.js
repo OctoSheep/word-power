@@ -108,28 +108,61 @@ const updateUser = (
       message: 'Body is required.',
       data:    null,
     });
-  } else if (body.name === undefined || body.name === null) {
-    res.status(400).send({
-      status:  400,
-      message: 'Name is required.',
-      data:    null,
-    });
-  } else if (typeof body.name !== 'string') {
+  } else if (body.name !== undefined && body.name !== null && typeof body.name
+             !== 'string') {
     res.status(400).send({
       status:  400,
       message: 'Name must be a string.',
       data:    null,
     });
-  } else if (body.name.length === 0) {
+  } else if (body.globalData !== undefined && body.globalData !== null
+             && typeof body.globalData !== 'object') {
     res.status(400).send({
       status:  400,
-      message: 'Name is required.',
+      message: 'GlobalData must be an object.',
       data:    null,
     });
+  } else if (body.todayCount !== undefined && body.todayCount !== null
+             && typeof body.todayCount !== 'number') {
+    res.status(400).send({
+      status:  400,
+      message: 'TodayCount must be a number.',
+      data:    null,
+    });
+  } else if (body.glossaries !== undefined && body.glossaries !== null
+             && Array.isArray(body.glossaries) === false) {
+    res.status(400).send({
+      status:  400,
+      message: 'Glossaries must be an array.',
+      data:    null,
+    });
+  } else if (Array.isArray(body.glossaries)) {
+    for (const glossary of body.glossaries) {
+      if (glossary.glossary !== undefined && glossary.glossary !== null
+          && typeof glossary.glossary !== 'string') {
+        res.status(400).send({
+          status:  400,
+          message: 'Glossaries\' glossary must be a string.',
+          data:    null,
+        });
+      } else if (glossary.index !== undefined && glossary.index !== null
+                 && typeof glossary.index !== 'number') {
+        res.status(400).send({
+          status:  400,
+          message: 'Glossaries\' index must be a number.',
+          data:    null,
+        });
+      }
+    }
   }
+
   userServices.updateUser(
     code,
     body.name,
+    body.globalData,
+    body.glossaries,
+    new Date(),
+    body.todayCount,
   ).then((resolve) => {
       // console.log(resolve);
       res.status(200).send({
