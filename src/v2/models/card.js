@@ -13,6 +13,10 @@
 const mongoose = require('mongoose');
 
 const cardSchema = mongoose.Schema({
+  glossaryName:   {
+    type:     String,
+    required: true,
+  },
   wordId:         {
     type:     mongoose.Schema.Types.ObjectId,
     ref:      'Word',
