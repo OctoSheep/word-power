@@ -130,6 +130,31 @@ const getWordByNameOrIndex = (
   });
 };
 
+const getWordByIndex = (
+  glossaryName,
+  index,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    wordModel.findOne(
+      {
+        'glossary': glossaryName,
+        'index':    index,
+      },
+      {},
+      {},
+    ).exec(
+    ).then((word) => {
+        resolve(word);
+      },
+    ).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
 const createWord = (
   glossaryName,
   body,
@@ -304,6 +329,7 @@ module.exports = {
   getWords,
   getWordById,
   getWordByNameOrIndex,
+  getWordByIndex,
   createWord,
   createWords,
   updateWord,
