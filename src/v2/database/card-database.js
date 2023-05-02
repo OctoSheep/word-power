@@ -165,10 +165,79 @@ const deleteCard = (
   });
 };
 
+const deleteUser = (
+  userId,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    cardModel.deleteMany(
+      {
+        userId: userId,
+      },
+      {},
+    ).exec(
+    ).then((cards) => {
+        resolve(cards);
+      },
+    ).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
+const deleteWord = (
+  wordId,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    cardModel.deleteMany(
+      {
+        wordId: Object(wordId),
+      },
+      {},
+    ).exec(
+    ).then((cards) => {
+        resolve(cards);
+      },
+    ).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
+const deleteGlossary = (
+  glossaryName,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    cardModel.deleteMany(
+      {
+        glossaryName: glossaryName,
+      },
+      {},
+    ).exec(
+    ).then((cards) => {
+        resolve(cards);
+      },
+    ).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
 module.exports = {
   getCards,
   getCard,
   createCard,
   updateCard,
   deleteCard,
+  deleteUser,
+  deleteWord,
+  deleteGlossary,
 };

@@ -12,6 +12,8 @@
 
 const Glossary      = require('../database/glossary-database');
 const Word          = require('../database/word-database');
+const Card          = require('../../v2/database/card-database');
+const User          = require('../../v2/database/user-database');
 const githubService = require('./github-service');
 
 const getGlossaries = () => {
@@ -201,10 +203,18 @@ const deleteGlossary = (
         Word.deleteGlossary(
           glossaryName,
         ).then(() => {
-          Glossary.deleteGlossary(
+          Card.deleteGlossary(
             glossaryName,
           ).then(() => {
-            resolve(glossary);
+            User.deleteGlossary(
+              glossaryName,
+            ).then(() => {
+              Glossary.deleteGlossary(
+                glossaryName,
+              ).then(() => {
+                resolve(glossary);
+              });
+            });
           });
         });
       }

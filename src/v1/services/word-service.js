@@ -12,6 +12,7 @@
 
 const Glossary = require('../database/glossary-database');
 const Word     = require('../database/word-database');
+const Card     = require('../../v2/database/card-database');
 
 const getWords = (
   glossaryName,
@@ -274,11 +275,15 @@ const deleteWord = (
               glossaryName,
               word._id,
             ).then(() => {
-              Word.deleteWord(
-                glossaryName,
+              Card.deleteWord(
                 word._id,
               ).then(() => {
-                resolve(word);
+                Word.deleteWord(
+                  glossaryName,
+                  word._id,
+                ).then(() => {
+                  resolve(word);
+                });
               });
             });
           }

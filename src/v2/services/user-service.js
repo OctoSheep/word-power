@@ -11,6 +11,7 @@
  */
 
 const User = require('../database/user-database');
+const Card = require('../database/card-database');
 
 const code2session = (code) => {
   return new Promise((
@@ -181,10 +182,17 @@ const deleteUser = (
           data:    null,
         });
       } else {
-        User.deleteUser(
+        Card.deleteUser(
           openid,
         ).then(() => {
-            resolve(user);
+            User.deleteUser(
+              openid,
+            ).then(() => {
+                resolve(user);
+              },
+            ).catch((error) => {
+              reject(error);
+            });
           },
         ).catch((error) => {
           reject(error);

@@ -147,10 +147,39 @@ const deleteUser = (
   });
 };
 
+const deleteGlossary = (
+  glossaryName,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    userModel.updateMany(
+      {},
+      {
+        $pull: {
+          glossaries: {
+            glossary: glossaryName,
+          },
+        },
+      },
+      {},
+    ).exec(
+    ).then((users) => {
+        resolve(users);
+      },
+    ).catch((err) => {
+        reject(err);
+      },
+    );
+  });
+};
+
 module.exports = {
   getUser,
   getUsersCount,
   createUser,
   updateUser,
   deleteUser,
+  deleteGlossary,
 };
