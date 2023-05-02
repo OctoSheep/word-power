@@ -129,10 +129,10 @@ const updateCard = (
       message: 'Grade must be a number.',
       data:    null,
     });
-  } else if (body.grade < 1 || body.grade > 3) {
+  } else if (body.grade < 0 || body.grade > 2) {
     res.status(400).send({
       status:  400,
-      message: 'Grade must be between 1 and 3.',
+      message: 'Grade must be between 0 and 2.',
       data:    null,
     });
   }
