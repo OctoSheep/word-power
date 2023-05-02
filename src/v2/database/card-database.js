@@ -14,6 +14,31 @@ require('../../v1/database/connection');
 const fsrs      = require('fsrs.js');
 const cardModel = require('../models/card');
 
+const getCards = (
+  glossaryName,
+  userId,
+) => {
+  return new Promise((
+    resolve,
+    reject,
+  ) => {
+    cardModel.find(
+      {
+        glossaryName: glossaryName,
+        userId:       userId,
+      },
+      {},
+      {},
+    ).exec(
+    ).then((cards) => {
+        resolve(cards);
+      },
+    ).catch((err) => {
+      reject(err);
+    });
+  });
+};
+
 const getCard = (
   wordId,
   userId,
@@ -24,7 +49,7 @@ const getCard = (
   ) => {
     cardModel.findOne(
       {
-        wordId: Object(wordId),
+        wordId: wordId,
         userId: userId,
       },
       {},
@@ -40,6 +65,7 @@ const getCard = (
 };
 
 const createCard = (
+  glossaryName,
   wordId,
   userId,
   globalData,
@@ -50,18 +76,25 @@ const createCard = (
   ) => {
     const cardData = fsrs(
       {
-        wordId: Object(wordId),
-        userId: userId,
+        glossaryName: glossaryName,
+        wordId:       wordId,
+        userId:       userId,
       },
       -1,
       globalData,
     );
-    const card     = new cardModel(cardData);
+
+    const card = new cardModel(cardData.cardData);
+
     cardModel.create(
       [card],
       {},
     ).then((cards) => {
-        resolve(cards[0]);
+        resolve({
+            cardData:   cards[0],
+            globalData: cardData.globalData,
+          },
+        );
       },
     ).catch((err) => {
       reject(err);
@@ -128,6 +161,7 @@ const deleteCard = (
 };
 
 module.exports = {
+  getCards,
   getCard,
   createCard,
   updateCard,

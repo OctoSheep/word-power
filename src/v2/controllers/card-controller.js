@@ -12,46 +12,46 @@
 
 const cardService = require('../services/card-service');
 
-const getCard = (
+const getLatestCard = (
   req,
   res,
 ) => {
-  const wordId = req.params['wordId'];
-  const userId = req.params['userId'];
+  const glossaryName = req.params['glossaryName'];
+  const userId       = req.params['userId'];
 
-  if (wordId.length === 0) {
+  if (glossaryName.length === 0) {
     res.status(400).send({
       status:  400,
-      message: 'Card ID is required',
+      message: 'Glossary name is required.',
       data:    null,
     });
-  } else if (wordId.length !== 24) {
+  } else if (typeof glossaryName !== 'string') {
     res.status(400).send({
       status:  400,
-      message: 'Card ID is invalid',
+      message: 'Glossary name must be a string.',
       data:    null,
     });
   } else if (userId.length === 0) {
     res.status(400).send({
       status:  400,
-      message: 'User ID is required',
+      message: 'User ID is required.',
       data:    null,
     });
   } else if (userId.length !== 28) {
     res.status(400).send({
       status:  400,
-      message: 'User ID is invalid',
+      message: 'User ID is invalid.',
       data:    null,
     });
   }
-  cardService.getCard(
-    wordId,
+  cardService.getLatestCard(
+    glossaryName,
     userId,
   ).then((resolve) => {
       // console.log(resolve);
       res.status(200).send({
         status:  200,
-        message: 'Card with ID ' + wordId + ' found.',
+        message: 'Card found.',
         data:    resolve,
       });
     },
@@ -173,6 +173,6 @@ const updateCard = (
 };
 
 module.exports = {
-  getCard,
+  getLatestCard,
   updateCard,
 };

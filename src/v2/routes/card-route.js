@@ -15,8 +15,8 @@ const router         = express.Router();
 const cardController = require('../controllers/card-controller');
 
 router.get(
-  '/:wordId/:userId',
-  cardController.getCard,
+  '/:glossaryName/:userId',
+  cardController.getLatestCard,
 );
 
 router.patch(
