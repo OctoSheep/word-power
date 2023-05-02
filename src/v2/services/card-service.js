@@ -108,7 +108,6 @@ const createLatestCard = (
               userData.glossaries.find((glossary) => {
                 return glossary.glossary === glossaryName;
               }).index++;
-              userData.todayCount++;
 
               User.updateUser(
                 userData.openid,
