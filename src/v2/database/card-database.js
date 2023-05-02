@@ -49,7 +49,7 @@ const getCard = (
   ) => {
     cardModel.findOne(
       {
-        wordId: wordId,
+        wordId: Object(wordId),
         userId: userId,
       },
       {},
@@ -77,7 +77,7 @@ const createCard = (
     const cardData = fsrs(
       {
         glossaryName: glossaryName,
-        wordId:       wordId,
+        wordId:       Object(wordId),
         userId:       userId,
       },
       -1,
@@ -111,24 +111,29 @@ const updateCard = (
     resolve,
     reject,
   ) => {
+    const card = fsrs(
+      cardData,
+      grade,
+      globalData,
+    );
+
     cardModel.findOneAndUpdate(
       {
-        wordId: cardData.wordId,
+        wordId: Object(cardData.wordId),
         userId: cardData.userId,
       },
       {
-        $set: fsrs(
-          cardData,
-          grade,
-          globalData,
-        ),
+        $set: card,
       },
       {
         new: true,
       },
     ).exec(
-    ).then((card) => {
-        resolve(card);
+    ).then((cardData) => {
+        resolve({
+          cardData:   cardData,
+          globalData: card.globalData,
+        });
       },
     ).catch((err) => {
       reject(err);

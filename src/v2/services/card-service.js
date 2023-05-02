@@ -108,6 +108,7 @@ const createLatestCard = (
               userData.glossaries.find((glossary) => {
                 return glossary.glossary === glossaryName;
               }).index++;
+              userData.todayCount++;
 
               User.updateUser(
                 userData.openid,
@@ -115,7 +116,7 @@ const createLatestCard = (
                 data.globalData,
                 userData.glossaries,
                 new Date(),
-                userData.todayCount++,
+                userData.todayCount,
               ).then(() => {
                   resolve(data.cardData);
                 },
@@ -143,8 +144,8 @@ const updateCard = (
     resolve,
     reject,
   ) => {
-    User.getUser(userId).then((user) => {
-        if (user) {
+    User.getUser(userId).then((userData) => {
+        if (userData) {
           Card.getCard(
             wordId,
             userId,
@@ -159,13 +160,19 @@ const updateCard = (
                 Card.updateCard(
                   oldCardData,
                   grade,
-                  user.globalData,
-                ).then(() => {
-                    Card.getCard(
-                      wordId,
-                      userId,
-                    ).then((cardData) => {
-                        resolve(cardData);
+                  userData.globalData,
+                ).then((data) => {
+                    userData.todayCount++;
+
+                    User.updateUser(
+                      userData.openid,
+                      userData.name,
+                      data.globalData,
+                      userData.glossaries,
+                      new Date(),
+                      userData.todayCount,
+                    ).then(() => {
+                        resolve(data.cardData);
                       },
                     ).catch((err) => {
                       reject(err);
