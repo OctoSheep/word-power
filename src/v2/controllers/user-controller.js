@@ -129,6 +129,13 @@ const updateUser = (
       message: 'TodayCount must be a number.',
       data:    null,
     });
+  } else if (body.totalCount !== undefined && body.totalCount !== null
+             && typeof body.totalCount !== 'number') {
+    res.status(400).send({
+      status:  400,
+      message: 'TotalCount must be a number.',
+      data:    null,
+    });
   } else if (body.glossaries !== undefined && body.glossaries !== null
              && Array.isArray(body.glossaries) === false) {
     res.status(400).send({
@@ -163,6 +170,7 @@ const updateUser = (
     body.glossaries,
     new Date(),
     body.todayCount,
+    body.totalCount,
   ).then((resolve) => {
       // console.log(resolve);
       res.status(200).send({

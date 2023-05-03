@@ -48,6 +48,10 @@ const userSchema = mongoose.Schema({
     type:    Number,
     default: 0,
   },
+  totalCount: {
+    type:    Number,
+    default: 0,
+  },
 });
 
 const userModel = mongoose.model(

@@ -73,6 +73,7 @@ const createUser = (
       glossary:   [],
       date:       new Date(),
       todayCount: 0,
+      totalCount: 0,
     });
     userModel.create(
       [user],
@@ -94,6 +95,7 @@ const updateUser = (
   glossaries,
   date,
   todayCount,
+  totalCount,
 ) => {
   return new Promise((
     resolve,
@@ -110,6 +112,7 @@ const updateUser = (
           glossaries: glossaries,
           date:       date,
           todayCount: todayCount,
+          totalCount: totalCount,
         },
       },
       {},

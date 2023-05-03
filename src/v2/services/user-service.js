@@ -70,6 +70,7 @@ const getUserById = (openid) => {
               user.glossary,
               today,
               0,
+              user.totalCount,
             ).then(() => {
                 User.getUser(
                   openid,
@@ -125,6 +126,7 @@ const updateUser = (
   glossaries,
   date,
   todayCount,
+  totalCount,
 ) => {
   return new Promise((
     resolve,
@@ -147,6 +149,7 @@ const updateUser = (
           glossaries,
           date,
           todayCount,
+          totalCount,
         ).then(() => {
             User.getUser(
               openid,
