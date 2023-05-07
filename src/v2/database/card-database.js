@@ -111,11 +111,12 @@ const updateCard = (
     resolve,
     reject,
   ) => {
-    const card = fsrs(
+    const card        = fsrs(
       cardData,
       grade,
       globalData,
     );
+    const newCardData = card.cardData;
 
     cardModel.findOneAndUpdate(
       {
@@ -123,15 +124,15 @@ const updateCard = (
         userId: cardData.userId,
       },
       {
-        $set: card,
+        $set: newCardData,
       },
       {
         new: true,
       },
     ).exec(
-    ).then((cardData) => {
+    ).then((newCardData) => {
         resolve({
-          cardData:   cardData,
+          cardData:   newCardData,
           globalData: card.globalData,
         });
       },
